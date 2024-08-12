@@ -1,0 +1,121 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  margin: 20px 30px;
+}
+
+.top-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  .welcome {
+    font-size: 2rem;
+  }
+  ::selection {
+    color: var(--cream);
+  }
+}
+
+.outer {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  color: var(--coffee);
+  box-shadow: 30px 30px 40px rgba(0, 0, 0, 0.438);
+  padding: 30px;
+  border-radius: 20px;
+  background-color: var(--cream);
+  animation: 0.3s linear bounce-in;
+  position: relative;
+  ::selection {
+    color: var(--lion);
+  }
+}
+
+.error-message {
+  color: var(--redwood);
+}
+
+.btn {
+  color: white;
+  background-color: var(--lion);
+  padding: 8px;
+  border-radius: 5px;
+  transition: 0.2s;
+  &:disabled {
+    background-color: rgb(95, 95, 95);
+    color: rgb(216, 216, 216);
+    cursor: default;
+  }
+  &:hover:enabled {
+    background-color: #b09070;
+  }
+}
+
+input {
+  color: white;
+  border: none;
+  outline: none;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: var(--coffee);
+  &::placeholder {
+    color: white;
+  }
+}
+
+@keyframes bounce-in {
+  25% {
+    scale: 0.95;
+    rotate: -1deg;
+  }
+  50% {
+    scale: 1.01;
+    rotate: 1deg;
+  }
+  75% {
+    scale: 0.98;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background-color: rgba(0, 0, 0, 0.479);
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.spinner {
+  border: 4px solid var(--cream);
+  border-left-color: var(--lion); /* Spinner color */
+  border-radius: 50%;
+  width: 40px; /* Spinner size */
+  height: 40px; /* Spinner size */
+  animation: spin 1s linear infinite; /* Spin animation */
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.register-btn {
+  margin-bottom: 5px;
+}
+
+.message1 {
+  margin-bottom: 2px;
+}

@@ -1,0 +1,103 @@
+<app-login-nav-bar></app-login-nav-bar>
+<div class="container">
+  <div class="outer">
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+    <div class="email-div" *ngIf="emailed">
+      <div class="content">
+        <h3>✅Success! Authenticate via email</h3>
+        <p>Redirecting...</p>
+      </div>
+    </div>
+    <div>
+      <button (click)="return()"><-- Back to login</button>
+      <h2 class="register">Register</h2>
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <input
+          type="text"
+          placeholder="First Name"
+          formControlName="firstName"
+          id="firstName"
+        />
+        <input type="text" placeholder="Last Name" formControlName="lastName" id="lastName" />
+        <input type="email" placeholder="Email*" formControlName="email" id="email" autocomplete="email" />
+        <div>
+          <input
+            type="text"
+            placeholder="Username*"
+            formControlName="username"
+            (keydown)="checkUsernameText = 'Check'"
+            id="username"
+            autocomplete="username"
+          />
+          <button
+            class="check-btn"
+            [disabled]="myForm.controls.username.invalid"
+            type="button"
+            (click)="checkUsername()"
+          >
+            {{ checkUsernameText }}
+          </button>
+        </div>
+        <input
+          type="password"
+          placeholder="Password*"
+          formControlName="password"
+          id="password"
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password*"
+          formControlName="confirmedPassword"
+          [ngClass]="{ error: !passwordsMatch() }"
+          id="confirmedPassword"
+        />
+        <button class="signup-btn" [disabled]="myForm.invalid">
+          {{ signupBtnText }}
+        </button>
+      </form>
+      <div class="error-div">
+        <p
+          class="error-message"
+          *ngIf="
+            myForm.controls.username.touched &&
+            myForm.controls.username.dirty &&
+            myForm.controls.username.invalid
+          "
+        >
+          ❌ Username must be at least 4 characters long
+        </p>
+        <p
+          class="error-message"
+          *ngIf="
+            myForm.controls.email.touched &&
+            myForm.controls.email.dirty &&
+            myForm.controls.email.invalid
+          "
+        >
+          ❌ Email invalid
+        </p>
+        <p
+          class="error-message"
+          *ngIf="
+            myForm.controls.password.touched &&
+            myForm.controls.password.dirty &&
+            myForm.controls.password.invalid
+          "
+        >
+          ❌ Password -> 6+ characters long, contain a special character
+        </p>
+        <p
+          class="error-message"
+          [ngClass]="{ transition: !passwordsMatch() }"
+          [hidden]="passwordsMatch()"
+        >
+          ❌ Passwords must match
+        </p>
+        <p class="error-message" *ngIf="errorMessage">❌ {{errorMessage}}</p>
+      </div>
+      <!-- <button (click)="test()">test</button> -->
+    </div>
+  </div>
+</div>

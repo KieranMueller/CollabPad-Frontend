@@ -1,0 +1,39 @@
+<app-login-nav-bar></app-login-nav-bar>
+<div class="container">
+  <div class="top-content">
+    <h2 class="welcome">Welcome to CollabPad!</h2>
+    <img src="../../../../notepad.png" alt="notepad-icon" />
+  </div>
+  <div class="outer">
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+    <h2>Login</h2>
+    <input
+      type="text"
+      [(ngModel)]="user.username"
+      (keydown)="onKey()"
+      placeholder="Username"
+      id="username"
+      autocomplete="username"
+    />
+    <input
+      type="password"
+      [(ngModel)]="user.password"
+      (keydown)="onKey()"
+      placeholder="Password"
+      id="password"
+    />
+    <button
+      class="btn login-btn"
+      [disabled]="user.username.length < 4 || user.password.length < 6"
+      (click)="login()"
+    >
+      Go
+    </button>
+    <p class="error-message" [hidden]="!error">{{ errorMessage }}</p>
+    <h3 class="message1">Don't have an account?</h3>
+    <button class="btn register-btn" (click)="register()">Sign Up</button>
+    <button class="btn forgot-password-btn" (click)="forgotPassword()">Forgot password?</button>
+  </div>
+</div>

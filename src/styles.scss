@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --dark: rgb(52, 52, 52);
+  --coffee: #644536;
+  --redwood: #b2675e;
+  --lion: #C4A381;
+  --pistachio: #BBD686;
+  --cream: #EEF1BD;
+}
+
+@font-face {
+  font-family: FiraCode;
+  src: url(../public/font/FiraCode-Regular.ttf);
+}
+
+* {
+  font-family: FiraCode, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  touch-action: manipulation;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: var(--lion);
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.2s;
+}

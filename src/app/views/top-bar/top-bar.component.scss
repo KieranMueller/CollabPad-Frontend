@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  cursor: default;
+}
+
+.bar {
+  background-color: var(--coffee);
+  color: var(--cream);
+  display: flex;
+  padding: 10px 60px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.228);
+  .title-div {
+    display: flex;
+    align-items: flex-end;
+    .title {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+  }
+}
+
+.welcome {
+  margin-right: 10px;
+}
+
+.logout {
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 10px;
+  border-radius: 10px;
+  &:hover {
+    background: var(--lion);
+  }
+}
