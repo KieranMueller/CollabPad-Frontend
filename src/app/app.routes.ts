@@ -5,6 +5,7 @@ import { authGuard } from './guard/auth.guard';
 import { RegisterComponent } from './views/register/register.component';
 import { ForgotPasswordComponent } from './views/forgot-password/forgot-password.component'
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component'
+import { SocketDemoComponent } from './views/socket-demo/socket-demo.component'
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:emailId', component: ResetPasswordComponent },
+  { path: 'socket-demo', component: SocketDemoComponent },
   { path: '**', redirectTo: 'home' },
 ];

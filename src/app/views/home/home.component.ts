@@ -1,7 +1,6 @@
 import {
   Component,
   HostListener,
-  inject,
   OnInit,
   QueryList,
   ViewChildren,
@@ -9,7 +8,7 @@ import {
 import { TextboxComponent } from '../textbox/textbox.component';
 import { CommonModule } from '@angular/common';
 import { TopBarComponent } from '../top-bar/top-bar.component';
-import { ActivatedRoute } from '@angular/router'
+import { WebsocketService } from '../../service/websocket.service';
 
 @Component({
   selector: 'app-home',
@@ -27,40 +26,14 @@ export class HomeComponent implements OnInit {
     },
   ];
   currentSelectedIndex = 0;
-
   @ViewChildren(TextboxComponent)
   textBoxComponents!: QueryList<TextboxComponent>;
+  latestMessage: any;
 
-  // todo
-  // Ensure when forgot password and resetting, new password must contain special char (same restraints)
-  // Ensure only one email per account, create forgot password/reset password + forgot username functionality
-  // Delete account functionality
-  // improve verification email html/css layout
-  // proper error response during register page when clicking sign up but user name exists
-  // modify selected text color everywhere
-  // login after email verification, ability to forget/change password w/ email
-  // Login page/semi-secure login functionality
-  // Multiple accounts/users on same device will get notes messed up due to local storage key names
-  // Drag to rearrange/move tabs
-  // Add remaining character counter to textboxes?
-  // allow adjustment of font size
-  // allow adjust font color
-  // Custom scroll bar!
-  // Loading spinners/animation (when logging in, registering)
-  // Improve confirm popups for delete tab and rename tabs, logout
-  // Handle no internet/response with backend situations (backend totally down), login etc
-  // make textarea proper size, large
-  // allow adjust background color, user can upload pic, or fun moving graphics/vids
-  // implement save single file button
-  // Sweet font, ability to underline, make bold etc, add bullets
-  // make dirty/unsaved files have different tab color
-  // Save button? Save entries to local storage and backend?
-  // Option to rename tabs
-  // Multiple tabs/textareas, flip through tabs
-  // Add collaborative option, like google drive, multiple users can real time edit
-  // Create limit for text in textbox to prevent spammers
+  constructor(private ws: WebsocketService) {}
 
   ngOnInit() {
+    this.handleWebsocketStuff();
     const history = localStorage.getItem('notepad-history');
     const currentIdx = localStorage.getItem('notepad-current-index');
     const globalTabCount = localStorage.getItem('notepad-globalTabCount');
@@ -73,6 +46,13 @@ export class HomeComponent implements OnInit {
     if (globalTabCount) {
       this.globalTabCount = JSON.parse(globalTabCount);
     }
+  }
+
+  handleWebsocketStuff() {
+    this.ws.connect('123');
+    this.ws.latestMessage.subscribe({
+      next: (data) => (this.latestMessage = data),
+    });
   }
 
   @HostListener('dblclick', ['$event'])
@@ -100,14 +80,13 @@ export class HomeComponent implements OnInit {
   }
 
   @HostListener('keyup', ['$event'])
-  @HostListener('keydown', ['$event'])
   @HostListener('click', ['$event'])
   saveFile() {
-    console.log(this.tabs);
     this.textBoxComponents.forEach((box) => {
       let obj = box.emitValueAndIndex();
       this.tabs[obj.index].value = obj.value;
     });
+    this.ws.send(JSON.stringify(this.tabs), '123');
     this.saveToLocalStorage();
   }
 
@@ -124,14 +103,11 @@ export class HomeComponent implements OnInit {
   }
 
   deleteTab(index: number, event: MouseEvent) {
-    console.log('current selected: ' + this.currentSelectedIndex);
-    console.log(index);
     if (
       this.tabs[index].value.length === 0 ||
       window.confirm(`Delete '${this.tabs[index].tabName}'?`)
     ) {
       this.tabs.splice(index, 1);
-      console.log(this.tabs);
       if (index < this.currentSelectedIndex) {
         this.currentSelectedIndex -= 1;
       }

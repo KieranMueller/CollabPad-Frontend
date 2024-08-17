@@ -1,0 +1,6 @@
+<div>
+  <h3>Socket Demo</h3>
+  <textarea name="textarea" id="textarea" (keyup)="send($event.key)" [(ngModel)]="value"></textarea>
+  <textarea name="textarea" id="textarea2" [(ngModel)]="value2"></textarea>
+  <button (click)="send2()">Send</button>
+</div>
