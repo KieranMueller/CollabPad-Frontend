@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
         if (data.token) {
           localStorage.setItem('notepad-jwt', data.token);
           localStorage.setItem('notepad-username', this.user.username);
+          localStorage.setItem('notepad-websocketId', data.websocketId);
           this.router.navigateByUrl('/home');
           this.isLoading = false;
         }

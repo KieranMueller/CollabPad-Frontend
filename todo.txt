@@ -1,4 +1,7 @@
 - todo
+- Pivot, no real time. Manual save pushes message/state to all viewers of doc. (Will it overwrite others though? Try to )
+
+
 - Ensure when forgot password and resetting, new password must contain special char (same restraints)
 - Ensure only one email per account, create forgot password/reset password + forgot username functionality
 - Delete account functionality

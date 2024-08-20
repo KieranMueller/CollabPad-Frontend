@@ -1,23 +1,23 @@
-import {
-  Component,
-  HostListener,
-  OnInit,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { Component, HostListener, OnInit, ViewChildren } from '@angular/core';
 import { TextboxComponent } from '../textbox/textbox.component';
 import { CommonModule } from '@angular/common';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { WebsocketService } from '../../service/websocket.service';
+import { FormsModule } from '@angular/forms';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TextboxComponent, CommonModule, TopBarComponent],
+  imports: [TextboxComponent, CommonModule, TopBarComponent, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  user = {
+    username: '',
+    websocketId: '',
+  };
   globalTabCount = 1;
   tabs: { tabName: string; value: string }[] = [
     {
@@ -26,17 +26,23 @@ export class HomeComponent implements OnInit {
     },
   ];
   currentSelectedIndex = 0;
-  @ViewChildren(TextboxComponent)
-  textBoxComponents!: QueryList<TextboxComponent>;
-  latestMessage: any;
+  machineId: string = '';
 
   constructor(private ws: WebsocketService) {}
 
   ngOnInit() {
+    this.machineId = uuidv4();
+    localStorage.setItem('notepad-machineId', this.machineId);
+    this.handleLocalStorageStuff();
     this.handleWebsocketStuff();
+  }
+
+  handleLocalStorageStuff() {
     const history = localStorage.getItem('notepad-history');
     const currentIdx = localStorage.getItem('notepad-current-index');
     const globalTabCount = localStorage.getItem('notepad-globalTabCount');
+    const username = localStorage.getItem('notepad-username');
+    const wbesocketId = localStorage.getItem('notepad-websocketId');
     if (history) {
       this.tabs = JSON.parse(history);
     }
@@ -46,12 +52,26 @@ export class HomeComponent implements OnInit {
     if (globalTabCount) {
       this.globalTabCount = JSON.parse(globalTabCount);
     }
+    if (username) {
+      this.user.username = username;
+    }
+    if (wbesocketId) {
+      this.user.websocketId = wbesocketId;
+    }
+    console.log(this.user);
   }
 
   handleWebsocketStuff() {
-    this.ws.connect('123');
+    this.ws.connect(this.user.websocketId);
     this.ws.latestMessage.subscribe({
-      next: (data) => (this.latestMessage = data),
+      next: (data) => {
+        console.log('here2', data);
+        const messageMachineId = data.headers.nativeHeaders.machineId[0];
+        if (messageMachineId !== this.machineId) {
+          this.tabs = JSON.parse(data.payload);
+          this.saveToLocalStorage()
+        }
+      },
     });
   }
 
@@ -62,7 +82,7 @@ export class HomeComponent implements OnInit {
       let res = prompt('Rename tab');
       if (res) {
         this.tabs[parseInt(idx)].tabName = res;
-        this.saveFile();
+        this.onChange(null);
       }
     }
   }
@@ -81,13 +101,20 @@ export class HomeComponent implements OnInit {
 
   @HostListener('keyup', ['$event'])
   @HostListener('click', ['$event'])
-  saveFile() {
-    this.textBoxComponents.forEach((box) => {
-      let obj = box.emitValueAndIndex();
-      this.tabs[obj.index].value = obj.value;
-    });
-    this.ws.send(JSON.stringify(this.tabs), '123');
+  onChange(event: any) {
+    this.sendToWebSocket(event);
     this.saveToLocalStorage();
+  }
+
+  sendToWebSocket(event: any) {
+    if (event.type !== 'click') {
+      console.log('sending message');
+      this.ws.send(
+        JSON.stringify(this.tabs),
+        this.user.websocketId,
+        this.machineId
+      );
+    }
   }
 
   saveToLocalStorage() {

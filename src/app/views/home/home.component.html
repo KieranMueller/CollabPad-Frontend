@@ -1,9 +1,5 @@
 <app-top-bar></app-top-bar>
 <div class="container">
-  <div>
-    <p>Testing purposes</p>
-    <p>{{latestMessage}}</p>
-  </div>
   <div class="box1">
     <p class="tip">(Double click tab to rename)</p>
     <div class="tabs-div">
@@ -15,7 +11,13 @@
         [value]="i"
       >
         {{ tabs[i].tabName }}
-        <span><img class="pencil-icon" [hidden]="tabs[i].value.length === 0" src="../../../../pencil.svg" alt="pencil" /></span>
+        <span
+          ><img
+            class="pencil-icon"
+            [hidden]="tabs[i].value.length === 0"
+            src="../../../../pencil.svg"
+            alt="pencil"
+        /></span>
         <span
           ><img
             class="x-icon"
@@ -27,12 +29,15 @@
       }
       <button class="new-tab-btn" (click)="newTab()">+</button>
     </div>
-    @for (tab of tabs; track tab; let i = $index) {
+    <!-- @for (tab of tabs; track tab; let i = $index) {
     <app-textbox
       [hidden]="i != currentSelectedIndex"
       [index]="i"
       [valueFromParent]="this.tabs[i].value"
     ></app-textbox>
+    } -->
+    @for (tab of tabs; track tab; let i = $index) {
+    <textarea [hidden]="i !== currentSelectedIndex" id="textarea{{i}}" [(ngModel)]="tabs[i].value"></textarea>
     }
   </div>
 </div>

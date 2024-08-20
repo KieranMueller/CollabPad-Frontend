@@ -22,7 +22,4 @@ export class TextboxComponent implements OnInit {
   emitValueAndIndex() {
     return { index: this.index(), value: this.value };
   }
-
-  test(event: any) {
-  }
 }
