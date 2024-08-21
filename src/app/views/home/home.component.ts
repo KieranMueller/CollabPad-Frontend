@@ -32,13 +32,32 @@ export class HomeComponent implements OnInit {
   constructor(private ws: WebsocketService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.machineId = uuidv4();
-    localStorage.setItem('notepad-machineId', this.machineId);
+    // What should order be? local storage, DB, socket etc.
+    this.getStateFromDB();
     this.handleLocalStorageStuff();
     this.handleWebsocketStuff();
   }
 
+  getStateFromDB() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('notepad-jwt')}`
+    })
+    this.http.get(`http://localhost:8081/state?username=${localStorage.getItem('notepad-username')}`, {headers: headers}).subscribe({
+      next: (res: any) => {
+        console.log('here3', res)
+        localStorage.setItem('notepad-websocketId', res.websocketId)
+        this.tabs = JSON.parse(res.history)
+      },
+      error: e => {
+        console.log(e)
+      }
+    })
+  }
+
   handleLocalStorageStuff() {
+    this.machineId = uuidv4();
+    localStorage.setItem('notepad-machineId', this.machineId);
     const history = localStorage.getItem('notepad-history');
     const currentIdx = localStorage.getItem('notepad-current-index');
     const globalTabCount = localStorage.getItem('notepad-globalTabCount');
@@ -133,11 +152,11 @@ export class HomeComponent implements OnInit {
   saveStateToDB() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJLaWVyYW5NdWVsbGVyIiwiaWF0IjoxNzI0MjU3Mzc2LCJleHAiOjE3MjQzNDM3NzZ9.GViqzb5LaX6aSDq8XVtEJKtGrqJ0slyVAkPWc_FPGZfyEXFmoIvaRGKhUx0XYKiL`
+      'Authorization': `Bearer ${localStorage.getItem('notepad-jwt')}`
     })
     const payload = {
       username: this.user.username,
-      history: this.tabs
+      history: JSON.stringify(this.tabs)
     }
     this.http.post(`http://localhost:8081/save`, payload, {headers: headers}).subscribe({
       next: res => {
