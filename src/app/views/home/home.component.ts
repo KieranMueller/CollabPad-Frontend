@@ -1,10 +1,11 @@
-import { Component, HostListener, OnInit, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { TextboxComponent } from '../textbox/textbox.component';
 import { CommonModule } from '@angular/common';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { WebsocketService } from '../../service/websocket.service';
 import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit {
   currentSelectedIndex = 0;
   machineId: string = '';
 
-  constructor(private ws: WebsocketService) {}
+  constructor(private ws: WebsocketService, private http: HttpClient) {}
 
   ngOnInit() {
     this.machineId = uuidv4();
@@ -127,6 +128,25 @@ export class HomeComponent implements OnInit {
       'notepad-globalTabCount',
       JSON.stringify(this.globalTabCount)
     );
+  }
+
+  saveStateToDB() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJLaWVyYW5NdWVsbGVyIiwiaWF0IjoxNzI0MjU3Mzc2LCJleHAiOjE3MjQzNDM3NzZ9.GViqzb5LaX6aSDq8XVtEJKtGrqJ0slyVAkPWc_FPGZfyEXFmoIvaRGKhUx0XYKiL`
+    })
+    const payload = {
+      username: this.user.username,
+      history: this.tabs
+    }
+    this.http.post(`http://localhost:8081/save`, payload, {headers: headers}).subscribe({
+      next: res => {
+        console.log(res)
+      },
+      error: e => {
+        console.log(e)
+      }
+    })
   }
 
   deleteTab(index: number, event: MouseEvent) {
