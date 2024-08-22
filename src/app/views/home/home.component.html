@@ -1,8 +1,7 @@
 <app-top-bar></app-top-bar>
 <div class="container">
-  <button (click)="saveStateToDB()">save to DB</button>
-  <button (click)="getStateFromDB()">get state</button>
   <div class="box1">
+    <button class="test-btn" (click)="addCollaborators()">add collaborators to {{this.tabs[this.currentSelectedIndex].tabName}}</button>
     <p class="tip">(Double click tab to rename)</p>
     <div class="tabs-div">
       @for (tab of tabs; track tab; let i = $index) {
@@ -31,13 +30,10 @@
       }
       <button class="new-tab-btn" (click)="newTab()">+</button>
     </div>
-    <!-- @for (tab of tabs; track tab; let i = $index) {
-    <app-textbox
-      [hidden]="i != currentSelectedIndex"
-      [index]="i"
-      [valueFromParent]="this.tabs[i].value"
-    ></app-textbox>
-    } -->
+    <div class="spinner-container">
+      <div [hidden]="!sendingState" class="spinner"></div>
+      <div [hidden]="sendingState">Up to date</div>
+    </div>
     @for (tab of tabs; track tab; let i = $index) {
     <textarea [hidden]="i !== currentSelectedIndex" id="textarea{{i}}" [(ngModel)]="tabs[i].value"></textarea>
     }

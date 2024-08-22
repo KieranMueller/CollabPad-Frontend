@@ -1,7 +1,8 @@
 - todo
 - Pivot, no real time. Manual save pushes message/state to all viewers of doc. (Will it overwrite others though? Try to )
 
-
+- Show icons for all people viewing same document
+- Delete all localstorage fields on logout
 - Ensure when forgot password and resetting, new password must contain special char (same restraints)
 - Ensure only one email per account, create forgot password/reset password + forgot username functionality
 - Delete account functionality

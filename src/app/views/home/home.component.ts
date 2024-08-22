@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   ];
   currentSelectedIndex = 0;
   machineId: string = '';
+  sendingState = false;
 
   constructor(private ws: WebsocketService, private http: HttpClient) {}
 
@@ -41,18 +42,25 @@ export class HomeComponent implements OnInit {
   getStateFromDB() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('notepad-jwt')}`
-    })
-    this.http.get(`http://localhost:8081/state?username=${localStorage.getItem('notepad-username')}`, {headers: headers}).subscribe({
-      next: (res: any) => {
-        console.log('here3', res)
-        localStorage.setItem('notepad-websocketId', res.websocketId)
-        this.tabs = JSON.parse(res.history)
-      },
-      error: e => {
-        console.log(e)
-      }
-    })
+      Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
+    });
+    this.http
+      .get(
+        `http://localhost:8081/state?username=${localStorage.getItem(
+          'notepad-username'
+        )}`,
+        { headers: headers }
+      )
+      .subscribe({
+        next: (res: any) => {
+          console.log('here3', res);
+          localStorage.setItem('notepad-websocketId', res.websocketId);
+          this.tabs = JSON.parse(res.history);
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
   }
 
   handleLocalStorageStuff() {
@@ -89,7 +97,7 @@ export class HomeComponent implements OnInit {
         const messageMachineId = data.headers.nativeHeaders.machineId[0];
         if (messageMachineId !== this.machineId) {
           this.tabs = JSON.parse(data.payload);
-          this.saveToLocalStorage()
+          this.saveToLocalStorage();
         }
       },
     });
@@ -114,6 +122,7 @@ export class HomeComponent implements OnInit {
         this.globalTabCount = 0;
       }
       this.tabs.push({ tabName: `new_${++this.globalTabCount}`, value: '' });
+      this.onChange(null);
     } else {
       alert(`Tab limit of ${tabLimit} reached`);
     }
@@ -122,12 +131,15 @@ export class HomeComponent implements OnInit {
   @HostListener('keyup', ['$event'])
   @HostListener('click', ['$event'])
   onChange(event: any) {
+    console.log('onChange()');
+    this.sendingState = true;
     this.sendToWebSocket(event);
+    this.saveStateToDB();
     this.saveToLocalStorage();
   }
 
-  sendToWebSocket(event: any) {
-    if (event.type !== 'click') {
+  sendToWebSocket(event: PointerEvent) {
+    if (!event || event.type !== 'click') {
       console.log('sending message');
       this.ws.send(
         JSON.stringify(this.tabs),
@@ -150,22 +162,26 @@ export class HomeComponent implements OnInit {
   }
 
   saveStateToDB() {
+    console.log('saveStateToDB()');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('notepad-jwt')}`
-    })
+      Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
+    });
     const payload = {
       username: this.user.username,
-      history: JSON.stringify(this.tabs)
-    }
-    this.http.post(`http://localhost:8081/save`, payload, {headers: headers}).subscribe({
-      next: res => {
-        console.log(res)
-      },
-      error: e => {
-        console.log(e)
-      }
-    })
+      history: JSON.stringify(this.tabs),
+    };
+    this.http
+      .post(`http://localhost:8081/save`, payload, { headers: headers })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.sendingState = false;
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
   }
 
   deleteTab(index: number, event: MouseEvent) {
@@ -180,5 +196,12 @@ export class HomeComponent implements OnInit {
       this.saveToLocalStorage();
     }
     event.stopPropagation();
+    this.onChange(null);
+  }
+
+  addCollaborators() {
+    console.log('addCollaborators()')
+    let userToAdd = prompt('Enter username or email address')
+    console.log(userToAdd)
   }
 }

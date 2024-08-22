@@ -1,6 +1,7 @@
 .container {
   color: white;
-  padding-left: 20px;
+  padding-left: 15px;
+  padding-right: 10px;
   .box1 {
     display: flex;
     flex-direction: column;
@@ -11,11 +12,19 @@
     }
     .tabs-div {
       display: flex;
+      flex-wrap: wrap;
     }
     .new-tab-btn {
       width: 100px;
+      background-color: var(--lion);
+      color: var(--cream);
+      border: 1px solid var(--cream);
+      &::selection {
+        color: var(--coffee);
+      }
       &:hover {
-        background-color: rgb(208, 208, 208);
+        background-color: var(--cream);
+        color: var(--coffee);
       }
     }
   }
@@ -24,15 +33,22 @@
 .current-tab {
   width: 100px;
   height: 40px;
-  border: 1px solid white;
   padding: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  box-shadow: 20px 20px 60px black;
+  background-color: var(--coffee);
+  color: var(--cream);
+  box-shadow: 20px 20px 20px #00000021;
+  transition: 0.4s;
+  &::selection {
+    background-color: var(--cream);
+    color: var(--coffee);
+  }
   &:hover {
-    background-color: rgb(214, 214, 214);
+    background-color: var(--lion);
+    color: var(--coffee);
     .x-icon {
       display: block;
     }
@@ -49,22 +65,43 @@
 
 .highlight {
   scale: 1.1;
-  background-color: rgb(178, 255, 156);
+  background-color: var(--cream);
+  color: var(--coffee);
+  animation: 0.4s linear select-tab;
   .x-icon {
     display: block;
   }
   &:hover {
-    background-color: rgb(178, 255, 156);
+    background-color: var(--cream);
+    color: var(--coffee);
+  }
+}
+
+@keyframes select-tab {
+  25% {
+    rotate: 4deg;
+  }
+  50% {
+    rotate: -3deg;
+  }
+  75% {
+    rotate: 3deg;
   }
 }
 
 .pencil-icon {
   width: 20px;
   rotate: 40deg;
+  &::selection {
+    color: black;
+  }
 }
 
 .tip {
   font-size: 0.75rem;
+  &::selection {
+    color: var(--coffee);
+  }
 }
 
 textarea {
@@ -74,7 +111,57 @@ textarea {
   outline: none;
   background-color: var(--coffee);
   color: white;
-  width: 80vw;
+  width: 87vw;
   height: 80vh;
   caret-color: var(--cream);
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.215);
+  &::selection {
+    background-color: var(--cream);
+    color: var(--coffee);
+  }
 }
+
+.spinner-container {
+  width: fit-content;
+  margin-top: 20px;
+  height: 20px;
+  div {
+    &::selection {
+      color: var(--coffee);
+    }
+  }
+}
+
+.spinner {
+  border: 4px solid var(--cream);
+  border-left-color: var(--lion); /* Spinner color */
+  border-radius: 50%;
+  width: 10px; /* Spinner size */
+  height: 10px; /* Spinner size */
+  animation: spin 1s linear infinite; /* Spin animation */
+  opacity: 0.5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.test-btn {
+  width: fit-content;
+}
+
+/////////////////////////////////////////////////////////////
+
+@media screen and (max-width: 500px) {
+  textarea {
+    width: 85vw;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  textarea {
+   width: 80vw;
+  }
+ }

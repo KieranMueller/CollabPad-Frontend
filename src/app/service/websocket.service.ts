@@ -48,7 +48,6 @@ export class WebsocketService {
   onMessageReceived(message: any) {
     console.log('Message Recieved from Server :: ' + message);
     this.latestMessage.next(JSON.parse(message.body))
-    // this.latestMessage.next(JSON.parse(message.body).payload);
     console.log('here1', this.latestMessage.getValue());
   }
 }
