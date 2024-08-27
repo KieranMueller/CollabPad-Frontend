@@ -150,6 +150,7 @@ export class HomeComponent implements OnInit {
   }
 
   saveToLocalStorage() {
+    console.log('Save to local storage')
     localStorage.setItem('notepad-history', JSON.stringify(this.tabs));
     localStorage.setItem(
       'notepad-current-index',
@@ -197,11 +198,5 @@ export class HomeComponent implements OnInit {
     }
     event.stopPropagation();
     this.onChange(null);
-  }
-
-  addCollaborators() {
-    console.log('addCollaborators()')
-    let userToAdd = prompt('Enter username or email address')
-    console.log(userToAdd)
   }
 }
