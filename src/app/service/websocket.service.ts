@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
+import * as Stomp from '@stomp/stompjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class WebsocketService {
   connect(userWebsocketId: string) {
     console.log(`Initializing WebSocket Connection to ${this.url}`);
     let ws = new SockJS(this.url);
-    this.stompClient = Stomp.over(ws);
+    this.stompClient = Stomp.Stomp.over(ws);
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe(
         `${this.topic}/${userWebsocketId}`,
@@ -42,12 +42,16 @@ export class WebsocketService {
 
   send(message: string, userWebsocketId: string, senderMachineId: string) {
     console.log(`Sending message: ${message}`);
-    this.stompClient.send(`/app/send/${userWebsocketId}`, {machineId: senderMachineId}, message);
+    this.stompClient.send(
+      `/app/send/${userWebsocketId}`,
+      { machineId: senderMachineId },
+      message
+    );
   }
 
   onMessageReceived(message: any) {
     console.log('Message Recieved from Server :: ' + message);
-    this.latestMessage.next(JSON.parse(message.body))
+    this.latestMessage.next(JSON.parse(message.body));
     console.log('here1', this.latestMessage.getValue());
   }
 }
