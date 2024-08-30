@@ -1,6 +1,7 @@
 - todo
 Priority
 - Routing not working well on azure, visit /home or /whatever, does not re-direct properly
+- Disable mobile zooming when selecting input/textareas
 
 
 - Show icons for all people viewing same document
