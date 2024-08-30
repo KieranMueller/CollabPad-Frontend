@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
+import { backendBaseURL } from '../shared/env.variables'
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { of } from 'rxjs/internal/observable/of';
 export class AuthService {
   isValidToken(username: string, token: string): Observable<boolean> {
     return inject(HttpClient)
-      .post(`http://localhost:8081/validate`, { username, token })
+      .post(`${backendBaseURL}/validate`, { username, token })
       .pipe(
         map((res) => res === true),
         catchError(() => of(false))

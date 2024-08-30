@@ -1,16 +1,16 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { TextboxComponent } from '../textbox/textbox.component';
 import { CommonModule } from '@angular/common';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { WebsocketService } from '../../service/websocket.service';
 import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { backendBaseURL } from '../../shared/env.variables'
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TextboxComponent, CommonModule, TopBarComponent, FormsModule],
+  imports: [CommonModule, TopBarComponent, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
     });
     this.http
       .get(
-        `http://localhost:8081/state?username=${localStorage.getItem(
+        `${backendBaseURL}/state?username=${localStorage.getItem(
           'notepad-username'
         )}`,
         { headers: headers }
@@ -173,7 +173,7 @@ export class HomeComponent implements OnInit {
       history: JSON.stringify(this.tabs),
     };
     this.http
-      .post(`http://localhost:8081/save`, payload, { headers: headers })
+      .post(`${backendBaseURL}/save`, payload, { headers: headers })
       .subscribe({
         next: (res) => {
           console.log(res);

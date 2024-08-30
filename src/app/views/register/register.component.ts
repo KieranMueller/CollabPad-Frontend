@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { LoginNavBarComponent } from '../login-nav-bar/login-nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { User } from '../../shared/types';
+import { backendBaseURL } from '../../shared/env.variables'
 
 const passContainsSpecialChar = (control: AbstractControl) => {
   const specialChars = '!?@$%^&*#+';
@@ -79,7 +80,7 @@ export class RegisterComponent implements OnInit {
     if (this.myForm.invalid) return;
     const user = this.createUser();
     this.isLoading = true;
-    this.http.post(`http://localhost:8081/register`, user).subscribe({
+    this.http.post(`${backendBaseURL}/register`, user).subscribe({
       next: (res: any) => {
         console.log(res);
         if (res.token) {
@@ -118,7 +119,7 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     this.http
       .post(
-        `http://localhost:8081/username-exists`,
+        `${backendBaseURL}/username-exists`,
         this.myForm.controls.username.value
       )
       .subscribe({

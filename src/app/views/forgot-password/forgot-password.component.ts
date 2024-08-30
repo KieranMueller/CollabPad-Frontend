@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoginNavBarComponent } from '../login-nav-bar/login-nav-bar.component'
 import { CommonModule } from '@angular/common'
+import { backendBaseURL } from '../../shared/env.variables'
 
 @Component({
   selector: 'app-forgot-password',
@@ -24,7 +25,7 @@ export class ForgotPasswordComponent {
 
   sendEmail() {
     this.isLoading = true;
-    this.http.post('http://localhost:8081/forgot-password', this.usernameOrEmail).subscribe({
+    this.http.post(`${backendBaseURL}/forgot-password`, this.usernameOrEmail).subscribe({
       next: res => {
         console.log(res)
         this.isLoading = false;

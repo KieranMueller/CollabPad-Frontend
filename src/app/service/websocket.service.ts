@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
+import { backendBaseURL } from '../shared/env.variables'
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebsocketService {
-  url = 'http://localhost:8081/ws';
+  url = `${backendBaseURL}/ws`
   topic = '/topic/messages';
   stompClient: any;
   public latestMessage = new BehaviorSubject<any>('');

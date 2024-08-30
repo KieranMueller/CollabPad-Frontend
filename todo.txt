@@ -1,5 +1,7 @@
 - todo
-- Pivot, no real time. Manual save pushes message/state to all viewers of doc. (Will it overwrite others though? Try to )
+Priority
+- Routing not working well on azure, visit /home or /whatever, does not re-direct properly
+
 
 - Show icons for all people viewing same document
 - Delete all localstorage fields on logout

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginNavBarComponent } from '../login-nav-bar/login-nav-bar.component';
 import { CommonModule } from '@angular/common'
+import { backendBaseURL } from '../../shared/env.variables'
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.isLoading = true;
-    this.http.post(`http://localhost:8081/login`, this.user).subscribe({
+    this.http.post(`${backendBaseURL}/login`, this.user).subscribe({
       next: (data: any) => {
         if (data.token) {
           localStorage.setItem('notepad-jwt', data.token);
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginViaEmailId(emailId: string) {
-    this.http.get(`http://localhost:8081/verify-email/${emailId}`).subscribe({
+    this.http.get(`${backendBaseURL}/verify-email/${emailId}`).subscribe({
       next: (res: any) => {
         console.log(res)
         localStorage.setItem('notepad-jwt', res.token);

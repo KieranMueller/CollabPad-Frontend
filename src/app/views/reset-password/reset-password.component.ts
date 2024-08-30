@@ -4,6 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginNavBarComponent } from '../login-nav-bar/login-nav-bar.component'
+import { backendBaseURL } from '../../shared/env.variables'
 
 @Component({
   selector: 'app-reset-password',
@@ -29,7 +30,7 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit() {
     const emailId = this.route.snapshot.params['emailId'];
-    this.http.get(`http://localhost:8081/emailId-exists/${emailId}`).subscribe({
+    this.http.get(`${backendBaseURL}/emailId-exists/${emailId}`).subscribe({
       next: (res: any) => {
         console.log(res);
         if (res) {
@@ -55,7 +56,7 @@ export class ResetPasswordComponent implements OnInit {
       this.user.newPassword === this.user.confirmedPassword
     ) {
       this.http
-        .post(`http://localhost:8081/reset-password`, this.user)
+        .post(`${backendBaseURL}/reset-password`, this.user)
         .subscribe({
           next: (res) => {
             this.isLoading = false;
