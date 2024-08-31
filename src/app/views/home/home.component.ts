@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   constructor(private ws: WebsocketService, private http: HttpClient) {}
 
   ngOnInit() {
+    
     // What should order be? local storage, DB, socket etc.
     this.getStateFromDB();
     this.handleLocalStorageStuff();

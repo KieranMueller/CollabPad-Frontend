@@ -115,6 +115,7 @@ textarea {
   height: 80vh;
   caret-color: var(--cream);
   box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.215);
+  font-size: 16px;
   &::selection {
     background-color: var(--cream);
     color: var(--coffee);

@@ -14,7 +14,7 @@ import { User } from '../../shared/types';
 import { backendBaseURL } from '../../shared/env.variables'
 
 const passContainsSpecialChar = (control: AbstractControl) => {
-  const specialChars = '!?@$%^&*#+';
+  const specialChars = '!?@$%^&*#+/';
   const pattern = new RegExp(`[${specialChars}]`);
   if (pattern.test(control.value)) {
     return null;

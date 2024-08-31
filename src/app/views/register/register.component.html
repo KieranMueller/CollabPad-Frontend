@@ -20,8 +20,19 @@
           formControlName="firstName"
           id="firstName"
         />
-        <input type="text" placeholder="Last Name" formControlName="lastName" id="lastName" />
-        <input type="email" placeholder="Email*" formControlName="email" id="email" autocomplete="email" />
+        <input
+          type="text"
+          placeholder="Last Name"
+          formControlName="lastName"
+          id="lastName"
+        />
+        <input
+          type="email"
+          placeholder="Email*"
+          formControlName="email"
+          id="email"
+          autocomplete="email"
+        />
         <div>
           <input
             type="text"
@@ -29,7 +40,6 @@
             formControlName="username"
             (keydown)="checkUsernameText = 'Check'"
             id="username"
-            autocomplete="username"
           />
           <button
             class="check-btn"
@@ -95,7 +105,7 @@
         >
           ❌ Passwords must match
         </p>
-        <p class="error-message" *ngIf="errorMessage">❌ {{errorMessage}}</p>
+        <p class="error-message" *ngIf="errorMessage">❌ {{ errorMessage }}</p>
       </div>
       <!-- <button (click)="test()">test</button> -->
     </div>

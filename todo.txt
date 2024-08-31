@@ -1,9 +1,14 @@
-- todo
 Priority
-- Routing not working well on azure, visit /home or /whatever, does not re-direct properly
-- Disable mobile zooming when selecting input/textareas
+- Disable mobile zooming when selecting input/textareas (zoom out when done typing on mobile?) font-size 16
+- Site feels too bare, add some more styling and sections?
+- Add UUID or something to localstorage props, history was overriden on different account on same device due to localstorage
 
-
+- Add canDeactivate logic for users leaving before state is saved
+- Center all divs, responsive
+- Can't double tap tab to rename on mobile
+- Remove hover effects on mobile
+- On register page, sign up button becomes enabled even though passwords don't match
+- Remove uneccessary console.logs
 - Show icons for all people viewing same document
 - Delete all localstorage fields on logout
 - Ensure when forgot password and resetting, new password must contain special char (same restraints)
