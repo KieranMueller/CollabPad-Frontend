@@ -5,7 +5,7 @@ import { WebsocketService } from '../../service/websocket.service';
 import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { backendBaseURL } from '../../shared/env.variables'
+import { backendBaseURL } from '../../shared/env.variables';
 
 @Component({
   selector: 'app-home',
@@ -33,11 +33,10 @@ export class HomeComponent implements OnInit {
   constructor(private ws: WebsocketService, private http: HttpClient) {}
 
   ngOnInit() {
-    
     // What should order be? local storage, DB, socket etc.
-    this.getStateFromDB();
     this.handleLocalStorageStuff();
-    this.handleWebsocketStuff();
+    this.getStateFromDB();
+    // this.handleWebsocketStuff();
   }
 
   getStateFromDB() {
@@ -56,7 +55,18 @@ export class HomeComponent implements OnInit {
         next: (res: any) => {
           console.log('here3', res);
           localStorage.setItem('notepad-websocketId', res.websocketId);
-          this.tabs = JSON.parse(res.history);
+          this.user.websocketId = res.websocketId;
+          if (res.history) {
+            this.tabs = JSON.parse(res.history);
+          } else {
+            this.tabs = [
+              {
+                tabName: 'new_1',
+                value: '',
+              },
+            ];
+          }
+          this.handleWebsocketStuff();
         },
         error: (e) => {
           console.log(e);
@@ -67,14 +77,14 @@ export class HomeComponent implements OnInit {
   handleLocalStorageStuff() {
     this.machineId = uuidv4();
     localStorage.setItem('notepad-machineId', this.machineId);
-    const history = localStorage.getItem('notepad-history');
+    // const history = localStorage.getItem('notepad-history');
     const currentIdx = localStorage.getItem('notepad-current-index');
     const globalTabCount = localStorage.getItem('notepad-globalTabCount');
     const username = localStorage.getItem('notepad-username');
-    const wbesocketId = localStorage.getItem('notepad-websocketId');
-    if (history) {
-      this.tabs = JSON.parse(history);
-    }
+    // const wbesocketId = localStorage.getItem('notepad-websocketId');
+    // if (history) {
+    //   this.tabs = JSON.parse(history);
+    // }
     if (currentIdx) {
       this.currentSelectedIndex = JSON.parse(currentIdx);
     }
@@ -84,14 +94,16 @@ export class HomeComponent implements OnInit {
     if (username) {
       this.user.username = username;
     }
-    if (wbesocketId) {
-      this.user.websocketId = wbesocketId;
-    }
-    console.log(this.user);
+    // if (wbesocketId) {
+    //   this.user.websocketId = wbesocketId;
+    // }
   }
 
   handleWebsocketStuff() {
+    console.log('handleWebSocketStuff()', this.user)
+    if (!this.user.websocketId) return;
     this.ws.connect(this.user.websocketId);
+    this.ws.latestMessage.next(this.tabs)
     this.ws.latestMessage.subscribe({
       next: (data) => {
         console.log('here2', data);
@@ -151,8 +163,7 @@ export class HomeComponent implements OnInit {
   }
 
   saveToLocalStorage() {
-    console.log('Save to local storage')
-    localStorage.setItem('notepad-history', JSON.stringify(this.tabs));
+    console.log('Save to local storage');
     localStorage.setItem(
       'notepad-current-index',
       JSON.stringify(this.currentSelectedIndex)

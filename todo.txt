@@ -3,6 +3,7 @@ Priority
 - Site feels too bare, add some more styling and sections?
 - Add UUID or something to localstorage props, history was overriden on different account on same device due to localstorage
 
+- Make main top bar text white
 - Add canDeactivate logic for users leaving before state is saved
 - Center all divs, responsive
 - Can't double tap tab to rename on mobile

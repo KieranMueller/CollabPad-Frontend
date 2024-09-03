@@ -42,7 +42,7 @@ export class WebsocketService {
   }
 
   send(message: string, userWebsocketId: string, senderMachineId: string) {
-    console.log(`Sending message: ${message}`);
+    console.log(`webSocketId ${userWebsocketId} is sending message: ${message}`);
     this.stompClient.send(
       `/app/send/${userWebsocketId}`,
       { machineId: senderMachineId },
