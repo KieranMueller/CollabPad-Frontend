@@ -29,14 +29,17 @@ export class HomeComponent implements OnInit {
   currentSelectedIndex = 0;
   machineId: string = '';
   sendingState = false;
+  mobileTapTimeoutId: any;
+  isMobile = false;
 
   constructor(private ws: WebsocketService, private http: HttpClient) {}
 
   ngOnInit() {
-    // What should order be? local storage, DB, socket etc.
+    if (window.innerWidth < 768) {
+      this.isMobile = true;
+    }
     this.handleLocalStorageStuff();
     this.getStateFromDB();
-    // this.handleWebsocketStuff();
   }
 
   getStateFromDB() {
@@ -77,14 +80,9 @@ export class HomeComponent implements OnInit {
   handleLocalStorageStuff() {
     this.machineId = uuidv4();
     localStorage.setItem('notepad-machineId', this.machineId);
-    // const history = localStorage.getItem('notepad-history');
     const currentIdx = localStorage.getItem('notepad-current-index');
     const globalTabCount = localStorage.getItem('notepad-globalTabCount');
     const username = localStorage.getItem('notepad-username');
-    // const wbesocketId = localStorage.getItem('notepad-websocketId');
-    // if (history) {
-    //   this.tabs = JSON.parse(history);
-    // }
     if (currentIdx) {
       this.currentSelectedIndex = JSON.parse(currentIdx);
     }
@@ -94,9 +92,6 @@ export class HomeComponent implements OnInit {
     if (username) {
       this.user.username = username;
     }
-    // if (wbesocketId) {
-    //   this.user.websocketId = wbesocketId;
-    // }
   }
 
   handleWebsocketStuff() {
@@ -116,11 +111,27 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  @HostListener('touchstart', ['$event'])
+  holdTabOnMobile(e: KeyboardEvent) {
+    this.mobileTapTimeoutId = setTimeout(() => {
+      this.changeTabName(e)
+    }, 1000)
+  }
+
+  @HostListener('touched', ['$event'])
+  @HostListener('mouseup', ['$event'])
+  @HostListener('mouseleave', ['$event'])
+  liftTapMobile() {
+    clearTimeout(this.mobileTapTimeoutId)
+  }
+
+
   @HostListener('dblclick', ['$event'])
   changeTabName(e: KeyboardEvent) {
     const idx = (e.target as HTMLInputElement).value;
     if ((e.target as HTMLInputElement).classList.contains('current-tab')) {
-      let res = prompt('Rename tab');
+      let tabName = this.tabs[parseInt(idx)].tabName;
+      let res = prompt(`Rename ${tabName ? tabName : 'tab'}`);
       if (res) {
         this.tabs[parseInt(idx)].tabName = res;
         this.onChange(null);

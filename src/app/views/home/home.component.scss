@@ -42,16 +42,13 @@
   color: white;
   box-shadow: 20px 20px 20px #00000021;
   transition: 0.4s;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE10+/Edge */
+  user-select: none;         /* Standard */
   &::selection {
     background-color: var(--cream);
     color: var(--coffee);
-  }
-  &:hover {
-    background-color: var(--lion);
-    color: var(--coffee);
-    .x-icon {
-      display: block;
-    }
   }
   .x-icon {
     display: none;
@@ -155,6 +152,18 @@ textarea {
 
 /////////////////////////////////////////////////////////////
 
+@media screen and (min-width: 768px) {
+  button.current-tab {
+    &:hover:not(.highlight) {
+      background-color: var(--lion);
+      color: var(--coffee);
+      .x-icon {
+        display: block;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 500px) {
   textarea {
     width: 85vw;
@@ -163,6 +172,6 @@ textarea {
 
 @media screen and (max-width: 380px) {
   textarea {
-   width: 80vw;
+    width: 80vw;
   }
- }
+}

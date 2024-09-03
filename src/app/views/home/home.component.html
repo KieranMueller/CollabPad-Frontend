@@ -1,7 +1,11 @@
 <app-top-bar></app-top-bar>
 <div class="container">
   <div class="box1">
-    <p class="tip">(Double click tab to rename)</p>
+    @if (isMobile) {
+      <p class="tip">(Long tap tab to rename)</p>
+    } @else {
+      <p class="tip">(Double click tab to rename)</p>
+    }
     <div class="tabs-div">
       @for (tab of tabs; track tab; let i = $index) {
       <button
@@ -34,7 +38,11 @@
       <div [hidden]="sendingState">Up to date</div>
     </div>
     @for (tab of tabs; track tab; let i = $index) {
-    <textarea [hidden]="i !== currentSelectedIndex" id="textarea{{i}}" [(ngModel)]="tabs[i].value"></textarea>
+    <textarea
+      [hidden]="i !== currentSelectedIndex"
+      id="textarea{{ i }}"
+      [(ngModel)]="tabs[i].value"
+    ></textarea>
     }
   </div>
 </div>
