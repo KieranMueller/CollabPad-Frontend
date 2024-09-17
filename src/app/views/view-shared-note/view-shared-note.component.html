@@ -1,6 +1,6 @@
 <app-top-bar></app-top-bar>
 <div class="container">
-    <button (click)="back()"><-- Back</button>
+    <button class="back-btn" (click)="back()"><-- Back</button>
     @if (note) {
         <div class="title-div">
             <input class="title" type="text" [readOnly]="!isOwner" [(ngModel)]="note.noteName">

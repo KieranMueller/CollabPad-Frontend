@@ -1,0 +1,10 @@
+<div class="container" (click)="emitClose($event)">
+    <div class="inner">
+        <p>{{prompt()}}</p>
+        <input type="text" [(ngModel)]="inputText" autofocus>
+        <div>
+            <button [disabled]="!inputText" (click)="emit()">Confirm</button>
+            <button (click)="emitClose('let me out')">Cancel</button>
+        </div>
+    </div>
+</div>

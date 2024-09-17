@@ -33,6 +33,14 @@
 .shared-notes-btn {
   margin-left: 10px;
   background-color: var(--cream);
+  font-size: 16px;
+  transition: 0.2s;
+  &:hover {
+    background-color: #e4e7b6;
+  }
+  &::selection {
+    color: var(--coffee);
+  }
 }
 
 .current-tab {
@@ -165,6 +173,14 @@ textarea {
       .x-icon {
         display: block;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .shared-notes-btn {
+    &:hover {
+      background-color: var(--cream);
     }
   }
 }

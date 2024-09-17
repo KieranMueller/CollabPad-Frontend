@@ -10,19 +10,45 @@
     margin: 10px;
     box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.399);
     width: 250px;
+    transition: 0.2s;
+    &:hover {
+        background-color: #e2e6b4;
+    }
+    * {
+        &::selection {
+            color: var(--lion);
+        }
+    }
 }
 
 .note-name {
     margin-top: 30px;
 }
 
+.top-btn-div {
+    margin-top: 10px;
+    margin-left: 10px;
+    button {
+        padding: 5px;
+        margin-right: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: var(--coffee);
+        color: white;
+        margin-right: 7px;
+        transition: 0.2s;
+        &:hover {
+            background-color: #4a2b1b;
+        }
+        &::selection {
+            color: var(--cream);
+        }
+    }
+}
+
 .notes {
     display: flex;
     flex-wrap: wrap;
-}
-
-button {
-    margin-right: 5px;
 }
 
 .crown {
@@ -75,6 +101,14 @@ button {
         font-size: 16px;
         margin-bottom: 5px;
         width: 100%;
+        transition: 0.2s;
+        padding: 5px;
+        &:hover {
+            background-color: #b08f6f;
+        }
+        &::selection {
+            color: var(--cream);
+        }
     }
 }
 
@@ -141,4 +175,24 @@ button {
 
 .cursor-default {
     cursor: default;
+}
+
+@media screen and (max-width: 768px) {
+    .top-btn-div button {
+        &:hover {
+            background-color: var(--coffee);
+        }
+    }
+
+    .options-dropdown button {
+        &:hover {
+            background-color: var(--lion);
+        }
+    }
+
+    .shared-doc-card {
+        &:hover {
+            background-color: var(--cream);
+        }
+    }
 }

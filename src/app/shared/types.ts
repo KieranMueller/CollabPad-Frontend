@@ -19,4 +19,8 @@ export type SharedNote = {
   optionsDropdownOpen?: boolean
   removeUsers?: boolean
   usersToRemove?: string[]
+  sharedUsers?: string[]
+  isRenamingNote?: boolean
+  isAddingUsers?: boolean
+  isDeletingNote?: boolean
 };

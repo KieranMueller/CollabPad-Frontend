@@ -1,0 +1,23 @@
+<!-- Don't change .container class name, used to exit when clicked -->
+<div class="container" (click)="cancel($event)">
+    <div class="inner">
+        <p class="title">Add users to {{note().noteName}}</p>
+        <div>
+            <input type="text" placeholder="username" [(ngModel)]="inputVal" autofocus>
+            <button [disabled]="!inputVal" class="add-btn" (click)="addUser()">Add</button>
+        </div>
+        <p class="error" *ngIf="errorMessage">{{errorMessage}}</p>
+        <div class="usernames">
+            @for (user of usernamesToAdd; track user) {
+                <div class="user">
+                    <img (click)="removeUser(user)" class="x-icon" src="../../../../x1.svg" alt="cancel">
+                    <p>{{user}}</p>
+                </div>
+            }
+        </div>
+        <div>
+            <button [disabled]="usernamesToAdd.length < 1" (click)="sendAddUserReq()">Done</button>
+            <button (click)="cancel('let me out')">Cancel</button>
+        </div>
+    </div>
+</div>

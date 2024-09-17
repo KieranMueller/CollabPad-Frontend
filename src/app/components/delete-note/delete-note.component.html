@@ -1,0 +1,9 @@
+<div class="container" (click)="cancel($event)">
+    <div class="inner">
+        <p>Delete {{note().noteName}}?</p>
+        <div class="btn-div">
+            <button class="del" (click)="delete()">Delete</button>
+            <button (click)="cancel('let me out')">Cancel</button>
+        </div>
+    </div>
+</div>

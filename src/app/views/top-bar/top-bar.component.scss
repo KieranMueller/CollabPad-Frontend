@@ -56,6 +56,14 @@ h2 {
   }
 }
 
+@media screen and (max-width: 768px) {
+  h2.logout {
+    &:hover {
+      background-color: var(--coffee);
+    }
+  }
+}
+
 @media screen and (max-width: 650px) {
   .bar {
     padding: 10px 20px;

@@ -1,0 +1,109 @@
+.container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.462);
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    .inner {
+        background-color: var(--lion);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 10px 20px rgb(0, 0, 0);
+        .title {
+            margin: 6px;
+            font-size: 22px;
+        }
+        input {
+            font-size: 16px;
+            margin-bottom: 10px;
+            background-color: var(--cream);
+            border-radius: 3px;
+            padding: 5px;
+        }
+        button {
+            margin: 3px;
+            margin-bottom: 10px;
+            background-color: var(--coffee);
+            color: white;
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 80px;
+            transition: 0.2s;
+            &:hover {
+                background-color: #422e25;
+            }
+            &:disabled {
+                background-color: lightgray;
+                color: gray;
+                cursor: default;
+            }
+        }
+        .add-btn {
+            background-color: var(--cream);
+            color: black;
+            &:hover:enabled {
+                background-color: #e2e4b3;
+            }
+            &:disabled {
+                background-color: lightgray;
+                color: gray;
+                cursor: default;
+            }
+            &:focus {
+                border: 3px solid var(--coffee);
+            }
+        }
+    }
+}
+
+.usernames {
+    display: flex;
+}
+
+.user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+    background-color: var(--coffee);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    p {
+        margin: 0;
+    }
+    img {
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}
+
+.x-icon {
+    width: 25px;
+}
+
+.error {
+    margin: 4px;
+    color: rgb(214, 90, 90);
+    background-color: var(--cream);
+    padding: 4px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .container .inner button {
+        &:hover:enabled {
+            background-color: var(--coffee);
+        }
+    }
+    .container .inner .add-btn {
+        &:hover:enabled {
+            background-color: var(--cream);
+        }
+    }
+}

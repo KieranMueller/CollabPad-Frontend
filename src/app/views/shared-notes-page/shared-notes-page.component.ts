@@ -6,18 +6,20 @@ import { backendBaseURL } from '../../shared/env.variables';
 import { CommonModule } from '@angular/common';
 import { SharedNote } from '../../shared/types';
 import { NotesService } from '../../service/notes.service';
+import { WindowPromptComponent } from '../../components/window-prompt/window-prompt.component';
+import { AddUsersComponent } from '../../components/add-users/add-users.component';
+import { DeleteNoteComponent } from '../../components/delete-note/delete-note.component';
 
 @Component({
   selector: 'app-shared-notes-page',
   standalone: true,
-  imports: [TopBarComponent, CommonModule],
+  imports: [TopBarComponent, CommonModule, WindowPromptComponent, AddUsersComponent, DeleteNoteComponent],
   templateUrl: './shared-notes-page.component.html',
   styleUrl: './shared-notes-page.component.scss'
 })
 export class SharedNotesPageComponent implements OnInit {
   sharedNotes: SharedNote[] | null = null; 
   username = localStorage.getItem('notepad-username')
-  usersToRemove: Map<number, string[]> = new Map<number, string[]>()
 
   ngOnInit() {
     this.fetchSharedNotes()
@@ -29,9 +31,19 @@ export class SharedNotesPageComponent implements OnInit {
     this.http.get(`${backendBaseURL}/shared-notes?user=${localStorage.getItem('notepad-username')}`).subscribe({
       next: (data: any) => {
         this.sharedNotes = data
+        this.populateSharedUsersList()
       },
       error: e => {
         console.log(e)
+      }
+    })
+  }
+
+  populateSharedUsersList() {
+    this.sharedNotes?.forEach((note: SharedNote) => {
+      note.sharedUsers = Object.keys(note.collaboraterUsernamesAndIds)
+      if (note.sharedUsers.includes(note.ownerUsername)) {
+        note.sharedUsers.splice(note.sharedUsers.indexOf(note.ownerUsername), 1)
       }
     })
   }
@@ -68,7 +80,6 @@ export class SharedNotesPageComponent implements OnInit {
   }
 
   handleOptions(event: any, note: SharedNote) {
-    console.log(note.usersToRemove)
     if (event.target.classList.contains('options')) {
       event.stopPropagation()
       note.optionsDropdownOpen = true
@@ -80,19 +91,16 @@ export class SharedNotesPageComponent implements OnInit {
     event.stopPropagation()
   }
 
-  deleteNoteById(noteId: number) {
-    this.notesService.deleteNoteById(noteId)
+  deleteNoteById(note: SharedNote) {
+    note.isDeletingNote = true;
+    note.optionsDropdownOpen = false;
   }
 
-  toggleOptions(note: SharedNote) {
-    note.optionsDropdownOpen = false
-  }
-
-  renameNote(note: SharedNote) {
-    let newName = window.prompt(`Rename ${note.noteName}`)
-    this.notesService.renameNote(note.id, newName!).subscribe({
-      next: (data: any) => {
-        console.log(data)
+  deleteNoteByIdReq(noteId: number) {
+    console.log(noteId)
+    this.notesService.deleteNoteById(noteId).subscribe({
+      next: (res: any) => {
+        console.log(res)
         window.location.reload()
       }, error: e => {
         console.log(e)
@@ -100,12 +108,38 @@ export class SharedNotesPageComponent implements OnInit {
     })
   }
 
-  addCollaborators(note: SharedNote) {
-    const currentCollaborators = Object.keys(note.collaboraterUsernamesAndIds)
-    this.notesService.addCollaborators(this.username!, currentCollaborators, note)
+  toggleOptions(note: SharedNote) {
+    note.optionsDropdownOpen = false
   }
 
-  removeCollaborators(index: number, note: SharedNote) {
+  renameNote(input: string, note: SharedNote) {
+    if (!input) return
+    this.notesService.renameNote(note.id, input).subscribe({
+      next: (data: any) => {
+        window.location.reload()
+      }, error: e => {
+        console.log(e)
+      }
+    })
+    note.isRenamingNote = false
+    note.optionsDropdownOpen = false
+  }
+
+  closeRenameNotePrompt(note: SharedNote) {
+    note.isRenamingNote = false;
+  }
+
+  openRenameNote(note: SharedNote) {
+    note.isRenamingNote = true
+    note.optionsDropdownOpen = false;
+  }
+
+  addCollaborators(note: SharedNote) {
+    note.isAddingUsers = true
+    note.optionsDropdownOpen = false;
+  }
+
+  removeCollaborators(note: SharedNote) {
     note.optionsDropdownOpen = false
     note.removeUsers = true
   }
@@ -132,6 +166,12 @@ export class SharedNotesPageComponent implements OnInit {
 
   sendRemoveUsersReq(note: SharedNote) {
     this.notesService.removeMultipleUsersFromNoteByUsername(note.id, note.usersToRemove!)
+  }
+
+  unshareSelf(note: SharedNote) {
+    if (window.confirm(`Leave ${note.noteName}?`))
+    note.usersToRemove = [this.username!]
+    this.sendRemoveUsersReq(note)
   }
 
   cancelRemoveUsers(event: MouseEvent, note: SharedNote) {

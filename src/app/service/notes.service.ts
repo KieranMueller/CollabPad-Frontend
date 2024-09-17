@@ -14,20 +14,14 @@ export class NotesService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
     });
-    if (window.confirm('Are you sure?')) {
-      this.http.delete(`${backendBaseURL}/delete-note/${noteId}`, {headers: headers}).subscribe({
-        next: (data: any) => {
-          console.log(data)
-          window.location.reload()
-        },
-        error: e => {
-          console.log(e)
-        }
-      })
-    }
+    return this.http.delete(`${backendBaseURL}/delete-note/${noteId}`, {headers: headers});
   }
 
   addCollaborators(username: string, currentCollaborators: string[], note: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
+    });
     const usernameToAdd = window.prompt(`Enter Username to share on ${note.noteName}`)
     if (usernameToAdd) {
       if (usernameToAdd === username) {
@@ -38,7 +32,7 @@ export class NotesService {
         alert(`${usernameToAdd} is already shared on ${note.noteName}`)
         return;
       }
-      this.http.patch(`${backendBaseURL}/update-note/${note.id}`, {collaboratorUsernames: [usernameToAdd]}).subscribe({
+      this.http.patch(`${backendBaseURL}/update-note/${note.id}`, {collaboratorUsernames: [usernameToAdd]}, {headers: headers}).subscribe({
         next: (data: any) => {
           console.log(Object.keys(data.collaboraterUsernamesAndIds))
           if (Object.keys(data.collaboraterUsernamesAndIds).includes(usernameToAdd)) {
@@ -53,6 +47,14 @@ export class NotesService {
         }
       })
     }
+  }
+
+  addUsersToNote(usernames: string[], noteId: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
+    });
+    return this.http.patch(`${backendBaseURL}/update-note/${noteId}`, {collaboratorUsernames: usernames}, {headers: headers})
   }
 
   removeUserFromNote(noteId: number, username: string) {
@@ -88,7 +90,11 @@ export class NotesService {
   }
 
   renameNote(noteId: number, newName: string) {
-    return this.http.patch(`${backendBaseURL}/update-note/${noteId}`, {noteName: newName})
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('notepad-jwt')}`,
+    });
+    return this.http.patch(`${backendBaseURL}/update-note/${noteId}`, {noteName: newName}, {headers: headers})
   }
 
   private getHeaders() {
