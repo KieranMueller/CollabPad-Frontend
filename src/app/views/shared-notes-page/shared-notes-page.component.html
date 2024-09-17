@@ -1,0 +1,45 @@
+<app-top-bar></app-top-bar>
+<div class="container">
+    <button (click)="backHome()"><-- Back Home</button>
+    <button (click)="createNewSharedNote()">New Shared Note</button>
+    <div class="notes">
+        @for (note of sharedNotes; track note; let i = $index) {
+            <div class="shared-doc-card" [ngClass]="{'cursor-default' : note.removeUsers}" (click)="viewSharedNote(note)">
+                <div *ngIf="note.optionsDropdownOpen" class="options-dropdown" (click)="optionsDropdownClick($event)">
+                    <img (click)="toggleOptions(note)" class="x-icon" src="../../../../x1.svg" alt="exit icon">
+                    <button *ngIf="note.ownerUsername === username" (click)="renameNote(note)">Rename Note</button>
+                    <button *ngIf="note.ownerUsername === username" (click)="addCollaborators(note)">Add Users</button>
+                    <button *ngIf="note.ownerUsername === username" (click)="removeCollaborators(i, note)">Remove Users</button>
+                    <button *ngIf="note.ownerUsername === username" (click)="deleteNoteById(note.id)">Delete Note</button>
+                </div>
+                @if (note.ownerUsername === username) {
+                    <img class="crown" src="../../../../crown.svg" alt="crown">
+                }
+                <img *ngIf="!note.optionsDropdownOpen" (click)="handleOptions($event, note)" class="options" src="../../../../options.svg" alt="options">
+                <h2 class="note-name">{{note.noteName}}</h2>
+                <p>Owned by: <span class="bold">{{note.ownerUsername}}</span></p>
+                <p>Shared with: </p>
+                @for (collaborator of note.collaboraterUsernamesAndIds | keyvalue; track $index) {
+                    <p class="bold" [id]="'collaborator' + i" (click)="addUsersForRemoval($event, collaborator.key, note)" 
+                    [ngClass]="{highlightForRemoval: collaborator.key !== note.ownerUsername && note.removeUsers, 
+                        'marked-for-removal' : note.removeUsers && note.usersToRemove?.includes(collaborator.key)}" 
+                        >{{collaborator.key === note.ownerUsername ? '' : collaborator.key}}</p>
+                }
+                <div class="confirm-cancel" *ngIf="note.removeUsers">
+                    <span class="selection-span confirm" (click)="sendRemoveUsersReq(note)">
+                        Confirm
+                        <img class="check-mark" (click)="doneRemovingUsers($event, note)" src="../../../../check1.svg" alt="">
+                    </span>
+                    <span class="selection-span cancel" (click)="cancelRemoveUsers($event, note)">Cancel
+                        <img src="../../../../x1.svg" alt="">
+                    </span>
+                </div>
+                <div class="time-div">
+                    <p class="time-tag">Created: {{note.createdDate | date}}</p>
+                    <p class="time-tag">Last updated:</p>
+                    <p class="updated-by">Last updated by:</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

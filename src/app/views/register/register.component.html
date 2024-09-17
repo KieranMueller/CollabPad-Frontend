@@ -63,7 +63,7 @@
           [ngClass]="{ error: !passwordsMatch() }"
           id="confirmedPassword"
         />
-        <button class="signup-btn" [disabled]="myForm.invalid">
+        <button class="signup-btn" [disabled]="myForm.invalid || myForm.controls.password.value !== myForm.controls.confirmedPassword.value">
           {{ signupBtnText }}
         </button>
       </form>

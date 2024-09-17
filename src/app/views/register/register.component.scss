@@ -65,6 +65,10 @@ button {
   &::selection {
     background-color: var(--coffee);
   }
+  &:focus {
+    background-color: var(--coffee);
+    border: 2px solid white;
+  }
 }
 
 form {

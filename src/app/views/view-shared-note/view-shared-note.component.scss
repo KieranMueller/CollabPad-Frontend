@@ -1,0 +1,54 @@
+.container {
+    padding: 15px;
+}
+
+textarea {
+    width: 90vw;
+    height: 60vh;
+    background-color: var(--cream);
+    color: var(--coffee);
+    border: none;
+    outline: none;
+    padding: 10px;
+    &::placeholder {
+        color: rgba(128, 128, 128, 0.749);
+    }
+}
+
+.title {
+    display: block;
+    text-align: center;
+    font-size: 22px;
+    padding: 7px;
+    background-color: var(--coffee);
+    color: white;
+    border: none;
+    &:focus {
+        border: 1px solid white;
+    }
+}
+
+.title-div {
+    display: flex;
+    margin-top: 10px;
+}
+
+.save-title-btn {
+    height: fit-content;
+    align-self: flex-end;
+    background-color: var(--coffee);
+    color: white;
+    margin-left: 3px;
+    font-size: 12px;
+}
+
+.share-div {
+    display: flex;
+    button {
+        height: fit-content;
+        align-self: center;
+        margin-left: 20px;
+        background-color: var(--coffee);
+        color: white;
+    }
+}

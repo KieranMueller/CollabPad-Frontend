@@ -1,0 +1,144 @@
+.shared-doc-card {
+    padding: 10px;
+    background-color: var(--cream);
+    width: fit-content;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid var(--coffee);
+    color: var(--coffee);
+    position: relative;
+    margin: 10px;
+    box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.399);
+    width: 250px;
+}
+
+.note-name {
+    margin-top: 30px;
+}
+
+.notes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+button {
+    margin-right: 5px;
+}
+
+.crown {
+    width: 60px;
+    position: absolute;
+    right: -27px;
+    top: -29px;
+    rotate: 38deg;
+}
+
+.bold {
+    font-weight: 800;
+}
+
+.options {
+    width: 25px;
+    position: absolute;
+    transition: 0.2s;
+    border-radius: 20px;
+    padding: 1px 6px;
+    &:hover {
+        scale: 1.3;
+        rotate: -10deg;
+        background-color: var(--lion);
+    }
+}
+
+.options-dropdown {
+    background-color: var(--coffee);
+    color: white;
+    width: 160px;
+    height: 200px;
+    padding: 35px 12px;
+    border-radius: 8px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+    .x-icon {
+        position: absolute;
+        width: 23px;
+        top: 5px;
+        left: 5px;
+        cursor: pointer;
+    }
+    button {
+        background-color: var(--lion);
+        color: white;
+        font-size: 16px;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+}
+
+.highlightForRemoval {
+    background-color: lightcoral;
+    border-radius: 5px;
+    padding: 4px;
+    width: fit-content;
+    transition: 0.2s;
+    animation: 1s infinite removal-animation;
+    cursor: pointer;
+    &:hover {
+        scale: 1.1;
+    }
+}
+
+@keyframes removal-animation {
+    25% {
+    }
+    50% {
+        rotate: 3deg;
+    }
+    75% {
+    }
+    95% {
+        rotate: -1deg;
+    }
+}
+
+.marked-for-removal {
+    background-color: rgb(179, 179, 179);
+    text-decoration: line-through;
+}
+
+.confirm-cancel {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    .selection-span {
+        color: black;
+        padding: 5px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.2s;
+        cursor: pointer;
+        margin: 4px;
+        img {
+            width: 25px;
+            margin-left: 5px;
+        }
+        &:hover {
+            scale: 1.02;
+        }
+    }
+    .confirm {
+        background-color: lightgreen;
+    }
+    .cancel {
+        background-color: lightcoral;
+    }
+}
+
+.cursor-default {
+    cursor: default;
+}

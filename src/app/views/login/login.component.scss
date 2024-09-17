@@ -55,6 +55,10 @@
   &:hover:enabled {
     background-color: #b09070;
   }
+  &:focus {
+    background-color: var(--coffee);
+    border: 2px solid white;
+  }
 }
 
 input {
@@ -126,5 +130,28 @@ input {
 @media screen and (max-width: 768px) {
   button:not([disabled]):hover {
     background-color: var(--lion) !important;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .welcome, .top-content {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-height: 650px) {
+  .top-content {
+    .welcome {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 20px;
+    }
+    img {
+      scale: 0.5;
+    }
+  }
+
+  .outer {
+    padding: 15px;
   }
 }

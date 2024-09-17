@@ -147,8 +147,4 @@ export class RegisterComponent implements OnInit {
       this.myForm.controls.confirmedPassword.value
     );
   }
-
-  test() {
-    console.log(this.myForm);
-  }
 }

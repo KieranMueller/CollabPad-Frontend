@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { backendBaseURL } from '../../shared/env.variables';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
   mobileTapTimeoutId: any;
   isMobile = false;
 
-  constructor(private ws: WebsocketService, private http: HttpClient) {}
+  constructor(private ws: WebsocketService, private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     if (window.innerWidth < 768) {
@@ -102,9 +103,14 @@ export class HomeComponent implements OnInit {
     this.ws.latestMessage.subscribe({
       next: (data) => {
         console.log('here2', data);
-        const messageMachineId = data.headers.nativeHeaders.machineId[0];
+        let messageMachineId = null;
+        if (data.headers) {
+          messageMachineId = data.headers.nativeHeaders.machineId[0];
+        }
         if (messageMachineId !== this.machineId) {
-          this.tabs = JSON.parse(data.payload);
+          if (data.payload) {
+            this.tabs = JSON.parse(data.payload);
+          }
           this.saveToLocalStorage();
         }
       },
@@ -221,5 +227,9 @@ export class HomeComponent implements OnInit {
     }
     event.stopPropagation();
     this.onChange(null);
+  }
+
+  goToSharedNotes() {
+    this.router.navigateByUrl('/shared')
   }
 }
