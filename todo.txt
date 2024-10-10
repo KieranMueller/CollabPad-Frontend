@@ -1,4 +1,5 @@
 Priority
+- Add ability to send/share notes with others (maybe don't add to this.tabs, separate section for shared stuff)
 - Site feels too bare, add some more styling and sections?
 
 - Add more failsafes if backend is not hooked up, save state in local storage?

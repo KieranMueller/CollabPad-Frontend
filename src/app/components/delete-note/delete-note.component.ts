@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, HostListener, input, output } from '@angular/core';
 import { SharedNote } from '../../shared/types';
 
 @Component({
@@ -12,6 +12,7 @@ export class DeleteNoteComponent {
   note = input.required<SharedNote>()
   deleteEmitter = output<number>()
 
+  @HostListener('document:keyup.enter')
   delete() {
     this.deleteEmitter.emit(this.note().id)
   }

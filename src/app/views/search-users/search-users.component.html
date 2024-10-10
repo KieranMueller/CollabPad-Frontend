@@ -1,0 +1,53 @@
+<app-top-bar></app-top-bar>
+<div class="container">
+    <div class="btn-div">
+        <button class="back-btn" (click)="routeToShared()"><-- Back</button>
+    </div>
+    <div class="search-div">
+        <img class="collab-img" src="../../../../collaboration.svg" alt="Collaborators">
+        <h3 class="heading">Find Collaborators!</h3>
+        <div class="input-div">
+            <div>
+                <input class="search-box" type="text" placeholder="username" [(ngModel)]="inputVal">
+                <button class="search-btn" [disabled]="inputVal.length < 1" (click)="search()">Search</button>
+            </div>
+            <p class="results-message">{{resultsMessage}}</p>
+            <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+        </div>
+        <div class="results-div">
+            @for (user of users; track user) {
+                <div class="user">
+                    <img class="avatar" [src]="user.base64Image ? 'data:image/jpeg;base64,' + user.base64Image : '../../../../default-avatar.jpg'" alt="">
+                    <div>
+                        <h3>{{user.username}}</h3>
+                        <p>{{user.firstName}} {{user.lastInitial}}.</p>
+                    </div>
+                    <div class="add-btn-div">
+                        <button class="add-btn" (click)="addToNote(user)">Add to notes</button>
+                        <div *ngIf="user.isAddingToNote" class="notes-div">
+                            <img (click)="exitAddToNote(user)" class="x-icon" src="../../../../x1.svg" alt="exit icon">
+                                <ul>
+                                @for (note of ownedNotes; track note) {
+                                    <div *ngIf="!note.collaboratorUsernames?.includes(user.username)
+                                            && !usersSuccessfullyAddedToNotes.get(user.username)?.includes(note.id)
+                                    ">
+                                        <li>
+                                            <label [for]="note.id">{{note.noteName}}</label>
+                                            <input type="checkbox" [id]="note.id" (change)="onCheckboxChange(note.id, user, $event)">
+                                        </li>
+                                    </div>
+                                }
+                                </ul>
+                                <div class="add-btn1-div">
+                                    <div *ngIf="addUsersIsLoading" class="spinner-container">
+                                        <div class="spinner"></div>
+                                      </div>
+                                    <button (click)="sendAddUserToNotesRequest(user)" [disabled]="!addUserToNotesMap.has(user.username) || addUsersIsLoading" class="add-btn1">Add</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

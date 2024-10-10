@@ -1,0 +1,9 @@
+<div class="container" (click)="closeFromOutside($event)">
+    <div class="inner">
+        <h2>Logout {{username}}?</h2>
+        <div>
+            <button class="yes" (click)="emitCloseOrLogout('logout')">Yes</button>
+            <button class="cancel" (click)="emitCloseOrLogout('close')">Cancel</button>
+        </div>
+    </div>
+</div>

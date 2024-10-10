@@ -1,0 +1,91 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    .inner {
+        background-color: var(--coffee);
+        width: fit-content;
+        height: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 30px;
+        border: 10px solid var(--cream);
+        border-radius: 15px;
+        color: white;
+        text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.648);
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.547);
+        .timer {
+            color: var(--cream);
+            animation: 1s infinite pulse;
+            &::selection {
+                color: var(--lion);
+            }
+        }
+        h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            &::selection {
+                color: var(--lion);
+            }
+        }
+        button {
+            padding: 8px 20px;
+            border-radius: 5px;
+            background-color: var(--cream);
+            color: var(--coffee);
+            font-size: 16px;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.424);
+            font-weight: 600;
+            transition: 0.2s;
+            &:hover {
+                background-color: var(--cream-hover);
+            }
+            &::selection {
+                background-color: var(--coffee);
+                color: var(--cream);
+            }
+        }
+        .redirect-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+            &::selection {
+                color: var(--cream);
+            }
+        }
+        .fine {
+            font-size: 14px;
+            margin-top: 20px;
+            &::selection {
+                background-color: var(--cream);
+                color: var(--coffee);
+            }
+        }
+        img {
+            &::selection {
+                background-color: var(--cream);
+            }
+        }
+    }
+}
+
+@keyframes pulse {
+    25% {
+        color: var(--lion);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        .inner {
+            button {
+                &:hover {
+                    background-color: var(--cream);
+                }
+            }
+        }
+    }
+}

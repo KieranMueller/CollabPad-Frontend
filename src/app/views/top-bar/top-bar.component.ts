@@ -1,29 +1,38 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { LogoutModalComponent } from '../../components/logout-modal/logout-modal.component'
+import { CommonModule } from '@angular/common'
+import { SettingsDropdownComponent } from '../../components/settings-dropdown/settings-dropdown.component'
 
 @Component({
   selector: 'app-top-bar',
   standalone: true,
-  imports: [],
+  imports: [LogoutModalComponent, CommonModule, SettingsDropdownComponent],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.scss',
 })
-export class TopBarComponent implements OnInit {
-  username = '';
+export class TopBarComponent {
+  username = localStorage.getItem('notepad-username');
   router = inject(Router);
+  showLogoutModal = false;
+  showSettings = false;
 
-  ngOnInit(): void {
-    const username = localStorage.getItem('notepad-username');
-    if (username) {
-      this.username = username;
+  handleLogout(message: 'close' | 'logout') {
+    switch(message) {
+        case 'close': {
+            this.showLogoutModal = false
+            break
+        }
+        case 'logout': {
+            localStorage.removeItem('notepad-username');
+            localStorage.removeItem('notepad-jwt');
+            this.router.navigateByUrl('/login');
+            break
+        }
     }
   }
 
-  logout() {
-    if (window.confirm('Are you sure?')) {
-      localStorage.removeItem('notepad-username');
-      localStorage.removeItem('notepad-jwt');
-      this.router.navigateByUrl('/login');
-    }
+  goHome() {
+    this.router.navigateByUrl('/home')
   }
 }

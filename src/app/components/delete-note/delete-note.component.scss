@@ -16,11 +16,17 @@
         align-items: center;
         background-color: var(--lion);
         min-height: 80px;
-        width: 200px;
+        width: 300px;
         padding: 15px;
         border-radius: 4px;
         font-size: 16px;
         box-shadow: 5px 10px 20px rgb(0, 0, 0);
+        p {
+            font-size: 22px;
+            &::selection {
+                background-color: var(--cream);
+            }
+        }
     }
 }
 
@@ -33,6 +39,9 @@
         color: white;
         font-size: 16px;
         transition: 0.2s;
+        &::selection {
+            background-color: var(--lion);
+        }
         &:hover {
             background-color: #422e24;
         }

@@ -1,55 +1,136 @@
 <app-top-bar></app-top-bar>
 <div class="container">
-    <div class="top-btn-div">
-        <button (click)="backHome()"><-- Back Home</button>
-        <button (click)="createNewSharedNote()">New Shared Note</button>
-    </div>
-    <div class="notes">
-        @for (note of sharedNotes; track note; let i = $index) {
-            <app-window-prompt *ngIf="note.isRenamingNote" [prompt]="'Rename ' + note.noteName" [note]="note" (response)="renameNote($event, note)" (close)="closeRenameNotePrompt($event)"></app-window-prompt>
-            <app-add-users *ngIf="note.isAddingUsers" [note]="note"></app-add-users>
-            <app-delete-note *ngIf="note.isDeletingNote" [note]="note" (deleteEmitter)="deleteNoteByIdReq($event)"></app-delete-note>
-            <div class="shared-doc-card" [ngClass]="{'cursor-default' : note.removeUsers}" (click)="viewSharedNote(note)">
-                <div *ngIf="note.optionsDropdownOpen" class="options-dropdown" (click)="optionsDropdownClick($event)">
-                    <img (click)="toggleOptions(note)" class="x-icon" src="../../../../x1.svg" alt="exit icon">
-                    <div *ngIf="note.ownerUsername === username">
-                        <button (click)="openRenameNote(note)">Rename Note</button>
-                        <button (click)="addCollaborators(note)">Add Users</button>
-                        <button *ngIf="note.sharedUsers!.length > 0" (click)="removeCollaborators(note)">Remove Users</button>
-                        <button (click)="deleteNoteById(note)">Delete Note</button>
-                    </div>
-                    <div *ngIf="note.ownerUsername !== username">
-                        <button (click)="unshareSelf(note)">Remove Self</button>
-                    </div>
-                </div>
-                @if (note.ownerUsername === username) {
-                    <img class="crown" src="../../../../crown.svg" alt="crown">
-                }
-                <img *ngIf="!note.optionsDropdownOpen" (click)="handleOptions($event, note)" class="options" src="../../../../options.svg" alt="options">
-                <h2 class="note-name">{{note.noteName}}</h2>
-                <p>Owned by: <span class="bold">{{note.ownerUsername === username ? note.ownerUsername + ' (you!)' : note.ownerUsername}}</span></p>
-                <p>Shared with: </p>
-                @for (collaborator of note.collaboraterUsernamesAndIds | keyvalue; track $index) {
-                    <p class="bold" [id]="'collaborator' + i" (click)="addUsersForRemoval($event, collaborator.key, note)" 
-                    [ngClass]="{highlightForRemoval: collaborator.key !== note.ownerUsername && note.removeUsers, 
-                        'marked-for-removal' : note.removeUsers && note.usersToRemove?.includes(collaborator.key)}" 
-                        >{{collaborator.key === note.ownerUsername ? '' : collaborator.key}}</p>
-                }
-                <div class="confirm-cancel" *ngIf="note.removeUsers">
-                    <span class="selection-span confirm" (click)="sendRemoveUsersReq(note)">
-                        Confirm
-                        <img class="check-mark" (click)="doneRemovingUsers($event, note)" src="../../../../check1.svg" alt="">
-                    </span>
-                    <span class="selection-span cancel" (click)="cancelRemoveUsers($event, note)">Cancel
-                        <img src="../../../../x1.svg" alt="">
-                    </span>
-                </div>
-                <div class="time-div">
-                    <p class="time-tag">Created: {{note.createdDate | date}}</p>
-                    <p class="time-tag">Last updated:</p>
-                    <p class="updated-by">Last updated by:</p>
-                </div>
-            </div>
+  <div class="top-btn-div">
+    <button (click)="backHome()"><-- Back Home</button>
+    <button (click)="createNewSharedNote()" [ngClass]="{pulse: sharedNotes?.length === 0}">New Shared Note</button>
+    <button (click)="searchUsers()">Search Users</button>
+  </div>
+  <div class="empty-notes" *ngIf="sharedNotes?.length === 0">
+        <h2>No Shared Notes!</h2>
+        <img class="coffee-img" src="../../../../coffee-cup.svg" alt="">
+  </div>
+  <div class="notes">
+    @for (note of sharedNotes; track note; let i = $index) {
+    <app-window-prompt
+      *ngIf="note.isRenamingNote"
+      [prompt]="'Rename ' + note.noteName"
+      [note]="note"
+      (response)="renameNote($event, note, username!)"
+      (close)="closeRenameNotePrompt($event)"
+    ></app-window-prompt>
+    <app-add-users *ngIf="note.isAddingUsers" [note]="note"></app-add-users>
+    <app-delete-note
+      *ngIf="note.isDeletingNote"
+      [note]="note"
+      (deleteEmitter)="deleteNoteByIdReq($event)"
+    ></app-delete-note>
+    <div
+      class="shared-doc-card"
+      [ngClass]="{ 'cursor-default': note.removeUsers }"
+      (click)="viewSharedNote(note)"
+      (mouseenter)="showPreview(note)"
+      (mouseleave)="hidePreview(note)"
+    >
+      <div *ngIf="note.isViewingPreview" class="preview-div">
+        <p>{{ note.text }}</p>
+      </div>
+      <div>
+        <div
+          *ngIf="note.optionsDropdownOpen"
+          class="options-dropdown"
+          (click)="optionsDropdownClick($event)"
+        >
+          <img
+            (click)="toggleOptions(note)"
+            class="x-icon"
+            src="../../../../x1.svg"
+            alt="exit icon"
+          />
+          <div *ngIf="note.ownerUsername === username">
+            <button (click)="openRenameNote(note)">Rename Note</button>
+            <button (click)="addCollaborators(note)">Add Users</button>
+            <button
+              *ngIf="note.sharedUsers!.length > 0"
+              (click)="removeCollaborators(note)"
+            >
+              Remove Users
+            </button>
+            <button (click)="deleteNoteById(note)">Delete Note</button>
+          </div>
+          <div *ngIf="note.ownerUsername !== username">
+            <button (click)="unshareSelf(note)">Remove Self</button>
+          </div>
+        </div>
+        @if (note.ownerUsername === username) {
+        <img class="crown" src="../../../../crown.svg" alt="crown" />
         }
+        <img
+          *ngIf="!note.optionsDropdownOpen"
+          (click)="handleOptions($event, note)"
+          class="options cursor-pointer"
+          src="../../../../options.svg"
+          alt="options"
+        />
+        <h2 class="note-name">{{ note.noteName }}</h2>
+        <p>
+          Owned by:
+          <span class="bold">{{note.ownerUsername}}
+            @if (note.ownerUsername === username) {
+                <span class="small">(you!)</span>
+            }
+          </span>
+        </p>
+        <p>Shared with:</p>
+        @for (collaborator of note.collaboraterUsernamesAndIds | keyvalue; track
+        $index) {
+        <p
+          class="bold"
+          [id]="'collaborator' + i"
+          (click)="addUsersForRemoval($event, collaborator.key, note)"
+          [ngClass]="{
+            highlightForRemoval:
+              collaborator.key !== note.ownerUsername && note.removeUsers,
+            'marked-for-removal':
+              note.removeUsers && note.usersToRemove?.includes(collaborator.key)
+          }"
+        >
+          {{ collaborator.key === note.ownerUsername ? "" : collaborator.key }}
+          @if (collaborator.key === username && collaborator.key !== note.ownerUsername) {
+            <span class="small">(you!)</span>
+          }
+        </p>
+        }
+        <div class="confirm-cancel" *ngIf="note.removeUsers">
+          <span
+            class="selection-span confirm"
+            (click)="sendRemoveUsersReq(note)"
+          >
+            Confirm
+            <img
+              class="check-mark"
+              (click)="doneRemovingUsers($event, note)"
+              src="../../../../check1.svg"
+              alt=""
+            />
+          </span>
+          <span
+            class="selection-span cancel"
+            (click)="cancelRemoveUsers($event, note)"
+            >Cancel
+            <img src="../../../../x1.svg" alt="" />
+          </span>
+        </div>
+        <div class="time-div">
+          <p class="time-tag">Created: {{ note.createdDate | date }}</p>
+          <p class="time-tag">Last updated: {{note.lastEdited | date: 'medium'}}</p>
+          <p class="updated-by">Last updated by: <span class="bold">{{note.usernameLastEdited}}
+            @if (note.usernameLastEdited === username) {
+                <span class="small">(you!)</span>
+            }
+          </span></p>
+        </div>
+      </div>
     </div>
+    }
+  </div>
 </div>

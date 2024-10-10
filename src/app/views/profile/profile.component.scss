@@ -1,0 +1,50 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--coffee);
+        width: fit-content;
+        padding: 40px 80px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.384);
+        color: white;
+        text-shadow: 5px 5px 5px black;
+        border: 10px solid var(--cream);
+        font-size: 1.3rem;
+        margin: 20px;
+        .img-div {
+            position: relative;
+            cursor: pointer;
+            border-radius: 200px;
+            transition: 0.2s;
+            &:hover {
+                opacity: 0.8;
+            }
+            label {
+                cursor: pointer;
+                .avatar {
+                    width: 150px;
+                    height: 150px;
+                    object-fit: cover;
+                    border-radius: 200px;
+                    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.384);
+                }
+                .camera {
+                    position: absolute;
+                    width: 50px;
+                    bottom: 0;
+                    left: 0;
+                }
+            }
+        }
+        p {
+            margin: 5px;
+        }
+    }
+}

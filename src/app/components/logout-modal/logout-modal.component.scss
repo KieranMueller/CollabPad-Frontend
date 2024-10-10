@@ -1,0 +1,76 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.403);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    .inner {
+        margin-top: 10px;
+        background-color: var(--cream);
+        height: fit-content;
+        width: fit-content;
+        padding: 20px;
+        border-radius: 10px;
+        border: 10px solid var(--lion);
+        color: var(--coffee);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.491);
+        h2 {
+            font-size: 22px;
+            &::selection {
+                background-color: var(--lion);
+            }
+        }
+        button {
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 3px;
+            transition: 0.2s;
+            box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.21);
+        }
+        .yes {
+            background-color: var(--coffee);
+            color: white;
+            &:hover {
+                background-color: #462f24;
+            }
+            &::selection {
+                background-color: var(--cream);
+                color: var(--coffee);
+            }
+        }
+        .cancel {
+            background-color: lightcoral;
+            color: white;
+            &:hover {
+                background-color: rgb(195, 87, 87);
+            }
+            &::selection {
+                color: var(--coffee);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container .inner{
+        .yes {
+            &:hover {
+                background-color: var(--coffee);
+            }
+        }
+        .cancel {
+            &:hover {
+                background-color: lightcoral;
+            }
+        }
+    }
+}

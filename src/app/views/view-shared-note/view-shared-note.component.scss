@@ -40,6 +40,9 @@ textarea {
     color: white;
     margin-left: 3px;
     font-size: 12px;
+    &:hover {
+      background-color: #493227;
+    }
 }
 
 .share-div {
@@ -50,6 +53,9 @@ textarea {
         margin-left: 20px;
         background-color: var(--coffee);
         color: white;
+        &:hover {
+          background-color: #493227;
+        }
     }
 }
 
@@ -60,7 +66,7 @@ button {
     border-radius: 3px;
     transition: 0.2s;
     &:hover {
-        background-color: #e3e5b3;
+        background-color: #d4d5a5;
     }
 }
 
@@ -70,4 +76,18 @@ button {
             background-color: var(--cream);
         }
     }
+
+    .save-title-btn {
+      &:hover {
+        background-color: var(--coffee);
+      }
+  }
+
+  .share-div {
+    button {
+        &:hover {
+          background-color: var(--coffee);
+        }
+    }
+}
 }

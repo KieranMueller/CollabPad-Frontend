@@ -16,6 +16,9 @@
         .title {
             margin: 6px;
             font-size: 22px;
+            &::selection {
+                color: var(--coffee);
+            }
         }
         input {
             font-size: 16px;
@@ -23,6 +26,12 @@
             background-color: var(--cream);
             border-radius: 3px;
             padding: 5px;
+            border: 2px solid var(--coffee);
+            outline: none;
+            caret-color: var(--coffee);
+            &::selection {
+                color: var(--lion);
+            }
         }
         button {
             margin: 3px;
@@ -34,6 +43,9 @@
             border-radius: 5px;
             width: 80px;
             transition: 0.2s;
+            &::selection {
+                background-color: var(--coffee);
+            }
             &:hover {
                 background-color: #422e25;
             }
@@ -93,6 +105,9 @@
     background-color: var(--cream);
     padding: 4px;
     border-radius: 5px;
+    &::selection {
+        color: var(--coffee);
+    }
 }
 
 @media screen and (max-width: 768px) {

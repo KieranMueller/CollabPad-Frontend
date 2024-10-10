@@ -1,0 +1,16 @@
+<app-top-bar></app-top-bar>
+<button [routerLink]="['/shared']"><-- Shared Notes</button>
+<div class="container">
+    <div class="profile">
+        <div class="img-div" for="imgupload">
+            <label for="imgupload">
+                <img class="avatar" [src]="user?.base64Image ? 'data:image/jpeg;base64,' + user?.base64Image : '../../../../default-avatar.jpg'" alt="profile picture">
+                <img class="camera" src="../../../../camera.svg" alt="upload avatar">
+                <input type="file" id="imgupload" style="display:none" name="imgupload" (change)="onFileUpload($event)"/>
+            </label>
+        </div>
+        <h2>{{user?.username}}</h2>
+        <p>{{user?.firstName}}</p>
+        <p>{{user?.lastName}}</p>
+    </div>
+</div>

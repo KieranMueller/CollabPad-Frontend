@@ -14,9 +14,11 @@
   .title-div {
     display: flex;
     align-items: flex-end;
+    text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.661);
     .title {
       font-size: 2rem;
       margin-right: 10px;
+      cursor: pointer;
     }
   }
 }
@@ -25,11 +27,28 @@
   margin-right: 10px;
 }
 
+.right-div {
+    display: flex;
+    position: relative;
+}
+
+.settings-icon {
+    width: 35px;
+    margin-right: 10px;
+    cursor: pointer;
+    object-fit: contain; 
+    transition: 0.2s;
+    &:hover {
+        scale: 1.08;
+    }   
+}
+
 .logout {
   cursor: pointer;
   transition: 0.2s;
   padding: 10px;
   border-radius: 10px;
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.654);
   &:hover {
     background: var(--lion);
   }

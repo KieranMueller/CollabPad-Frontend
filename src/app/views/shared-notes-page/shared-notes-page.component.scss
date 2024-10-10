@@ -1,198 +1,287 @@
 .shared-doc-card {
-    padding: 10px;
-    background-color: var(--cream);
-    width: fit-content;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 1px solid var(--coffee);
-    color: var(--coffee);
-    position: relative;
-    margin: 10px;
-    box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.399);
-    width: 250px;
-    transition: 0.2s;
-    &:hover {
-        background-color: #e2e6b4;
+  padding: 10px;
+  background-color: var(--cream);
+  width: fit-content;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid var(--coffee);
+  color: var(--coffee);
+  position: relative;
+  margin: 10px;
+  box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.399);
+  width: 250px;
+  transition: 0.2s;
+  &:hover {
+    background-color: #e2e6b4;
+  }
+  * {
+    &::selection {
+      color: var(--lion);
     }
-    * {
+  }
+}
+
+.pulse {
+    animation: 1.3s infinite pulse;
+}
+
+@keyframes pulse {
+    50% {
+        scale: 1.05;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.488);
+    }
+}
+
+.empty-notes {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 30%;
+    background-color: var(--coffee);
+    padding: 30px;
+    box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.81);
+    h2 {
+        margin: 0;
+        font-size: 36px;
+        color: rgb(238, 238, 238);
+        text-shadow: 5px 5px 10px black;
         &::selection {
             color: var(--lion);
         }
     }
-}
-
-.note-name {
-    margin-top: 30px;
-}
-
-.top-btn-div {
-    margin-top: 10px;
-    margin-left: 10px;
-    button {
-        padding: 5px;
-        margin-right: 5px;
-        border-radius: 5px;
-        font-size: 16px;
-        background-color: var(--coffee);
-        color: white;
-        margin-right: 7px;
-        transition: 0.2s;
-        &:hover {
-            background-color: #4a2b1b;
-        }
+    .coffee-img {
+        width: 20vw;
         &::selection {
-            color: var(--cream);
-        }
-    }
-}
-
-.notes {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.crown {
-    width: 60px;
-    position: absolute;
-    right: -27px;
-    top: -29px;
-    rotate: 38deg;
-}
-
-.bold {
-    font-weight: 800;
-}
-
-.options {
-    width: 25px;
-    position: absolute;
-    transition: 0.2s;
-    border-radius: 20px;
-    padding: 1px 6px;
-    &:hover {
-        scale: 1.3;
-        rotate: -10deg;
-        background-color: var(--lion);
-    }
-}
-
-.options-dropdown {
-    background-color: var(--coffee);
-    color: white;
-    width: 160px;
-    height: 200px;
-    padding: 35px 12px;
-    border-radius: 8px;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: default;
-    .x-icon {
-        position: absolute;
-        width: 23px;
-        top: 5px;
-        left: 5px;
-        cursor: pointer;
-    }
-    button {
-        background-color: var(--lion);
-        color: white;
-        font-size: 16px;
-        margin-bottom: 5px;
-        width: 100%;
-        transition: 0.2s;
-        padding: 5px;
-        &:hover {
-            background-color: #b08f6f;
-        }
-        &::selection {
-            color: var(--cream);
-        }
-    }
-}
-
-.highlightForRemoval {
-    background-color: lightcoral;
-    border-radius: 5px;
-    padding: 4px;
-    width: fit-content;
-    transition: 0.2s;
-    animation: 1s infinite removal-animation;
-    cursor: pointer;
-    &:hover {
-        scale: 1.1;
-    }
-}
-
-@keyframes removal-animation {
-    25% {
-    }
-    50% {
-        rotate: 3deg;
-    }
-    75% {
-    }
-    95% {
-        rotate: -1deg;
-    }
-}
-
-.marked-for-removal {
-    background-color: rgb(179, 179, 179);
-    text-decoration: line-through;
-}
-
-.confirm-cancel {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    .selection-span {
-        color: black;
-        padding: 5px;
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: 0.2s;
-        cursor: pointer;
-        margin: 4px;
-        img {
-            width: 25px;
-            margin-left: 5px;
-        }
-        &:hover {
-            scale: 1.02;
-        }
-    }
-    .confirm {
-        background-color: lightgreen;
-    }
-    .cancel {
-        background-color: lightcoral;
-    }
-}
-
-.cursor-default {
-    cursor: default;
-}
-
-@media screen and (max-width: 768px) {
-    .top-btn-div button {
-        &:hover {
             background-color: var(--coffee);
         }
     }
+}
 
-    .options-dropdown button {
-        &:hover {
-            background-color: var(--lion);
-        }
-    }
+.preview-div {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  bottom: 0;
+  left: 0;
+  color: white;
+  background-color: var(--coffee);
+  overflow-y: auto;
+  opacity: 0.85;
+  &::-webkit-scrollbar {
+    background-color: var(--cream);
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--cream);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--lion);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: grey;
+    cursor: pointer;
+  }
+  p {
+    margin: 10px;
+  }
+}
 
-    .shared-doc-card {
-        &:hover {
-            background-color: var(--cream);
-        }
+.note-name {
+  margin-top: 30px;
+}
+
+.top-btn-div {
+  margin-top: 10px;
+  margin-left: 10px;
+  button {
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--coffee);
+    color: white;
+    margin-right: 7px;
+    transition: 0.2s;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.478);
+    &:hover {
+      background-color: #4a2b1b;
     }
+    &::selection {
+      color: var(--cream);
+    }
+  }
+  :nth-child(2) {
+    background-color: var(--cream);
+    color: var(--coffee);
+    font-weight: 600;
+    &:hover {
+        background-color: var(--cream-hover);
+    }
+  }
+
+}
+
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.crown {
+  width: 60px;
+  position: absolute;
+  right: -27px;
+  top: -29px;
+  rotate: 38deg;
+}
+
+.bold {
+  font-weight: 800;
+}
+
+.small {
+    font-size: 13px;
+}
+
+.options {
+  width: 25px;
+  position: absolute;
+  transition: 0.2s;
+  border-radius: 20px;
+  padding: 1px 6px;
+  top: 10px;
+  left: 10px;
+  &:hover {
+    scale: 1.3;
+    rotate: -10deg;
+    background-color: var(--lion);
+  }
+}
+
+.options-dropdown {
+  background-color: var(--coffee);
+  color: white;
+  width: 60%;
+  padding: 35px 12px;
+  border-radius: 8px;
+  position: absolute;
+  display: flex;
+  top: 10px;
+  left: 10px;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid var(--lion);
+  cursor: default;
+  .x-icon {
+    position: absolute;
+    width: 23px;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+  }
+  button {
+    background-color: var(--lion);
+    color: white;
+    font-size: 16px;
+    margin-bottom: 5px;
+    width: 100%;
+    transition: 0.2s;
+    padding: 5px;
+    &:hover {
+      background-color: #b08f6f;
+    }
+    &::selection {
+      color: var(--cream);
+    }
+  }
+}
+
+.highlightForRemoval {
+  background-color: lightcoral;
+  border-radius: 5px;
+  padding: 4px;
+  width: fit-content;
+  transition: 0.2s;
+  animation: 1s infinite removal-animation;
+  cursor: pointer;
+  &:hover {
+    scale: 1.1;
+  }
+}
+
+@keyframes removal-animation {
+  25% {
+  }
+  50% {
+    rotate: 3deg;
+  }
+  75% {
+  }
+  95% {
+    rotate: -1deg;
+  }
+}
+
+.marked-for-removal {
+  background-color: rgb(179, 179, 179);
+  text-decoration: line-through;
+}
+
+.confirm-cancel {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  .selection-span {
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    cursor: pointer;
+    margin: 4px;
+    img {
+      width: 25px;
+      margin-left: 5px;
+    }
+    &:hover {
+      scale: 1.02;
+    }
+  }
+  .confirm {
+    background-color: lightgreen;
+  }
+  .cancel {
+    background-color: lightcoral;
+  }
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .top-btn-div button {
+    &:hover {
+      background-color: var(--coffee);
+    }
+  }
+
+  .options-dropdown button {
+    &:hover {
+      background-color: var(--lion);
+    }
+  }
+
+  .shared-doc-card {
+    &:hover {
+      background-color: var(--cream);
+    }
+  }
 }

@@ -1,16 +1,37 @@
 <app-top-bar></app-top-bar>
+@if (note?.isAddingUsers) {
+<app-add-users [note]="note!"></app-add-users>
+}
 <div class="container">
-    <button class="back-btn" (click)="back()"><-- Back</button>
-    @if (note) {
-        <div class="title-div">
-            <input class="title" type="text" [readOnly]="!isOwner" [(ngModel)]="note.noteName">
-            <button *ngIf="isOwner" (click)="saveTitle()" class="save-title-btn">Save Title</button>
-        </div>
-        <p>Owned by: {{note.ownerUsername === username ? note.ownerUsername + ' (you!)' : note.ownerUsername}}</p>
-        <div class="share-div">
-            <p>Shared with: {{collaborators.join(", ")}}</p>
-            <button *ngIf="isOwner" (click)="addUsers()">Add users</button>
-        </div>
-        <textarea [value]="note.text" [placeholder]="!note.text ? 'What\'s on your mind ' + username + '?' : ''"></textarea>
-    }
+  <button class="back-btn" (click)="back()"><-- Back</button>
+  @if (note) {
+  <div class="title-div">
+    <input
+      class="title"
+      type="text"
+      [readOnly]="!isOwner"
+      [(ngModel)]="note.noteName"
+    />
+    <button *ngIf="isOwner" (click)="saveTitle()" class="save-title-btn">
+      Save Title
+    </button>
+  </div>
+  <p>
+    Owned by:
+    {{
+      note.ownerUsername === username
+        ? note.ownerUsername + " (you!)"
+        : note.ownerUsername
+    }}
+  </p>
+  <div class="share-div">
+    <p>Shared with: {{ collaborators.join(", ") }}</p>
+    <button *ngIf="isOwner" (click)="addUsers()">Add users</button>
+  </div>
+  <textarea
+    (keyup)="websocketSend()"
+    [(ngModel)]="text"
+    [placeholder]="!note.text ? 'What\'s on your mind ' + username + '?' : ''"
+  ></textarea>
+  }
 </div>

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { LoginNavBarComponent } from '../login-nav-bar/login-nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { User } from '../../shared/types';
-import { backendBaseURL } from '../../shared/env.variables'
+import { backendBaseURL } from '../../shared/env.variables';
 
 const passContainsSpecialChar = (control: AbstractControl) => {
   const specialChars = '!?@$%^&*#+/';
